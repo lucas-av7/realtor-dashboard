@@ -2,6 +2,9 @@
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` INTEGER PRIMARY KEY,
+  `is_admin` BOOLEAN,
+  `is_partner` BOOLEAN,
+  `is_approved` BOOLEAN,
   `email` VARCHAR(100) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
@@ -13,6 +16,7 @@ DROP TABLE IF EXISTS `products`;
 CREATE TABLE IF NOT EXISTS `products` (
   `id` INTEGER PRIMARY KEY,
   `category_id` VARCHAR(100) NOT NULL,
+  `created_by` INTEGER,
   `description` TEXT NOT NULL,
   `img` INTEGER NOT NULL,
   `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
