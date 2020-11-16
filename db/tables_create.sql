@@ -2,6 +2,9 @@
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` INTEGER PRIMARY KEY,
+  `is_admin` BOOLEAN,
+  `is_partner` BOOLEAN,
+  `is_approved` BOOLEAN,
   `email` VARCHAR(100) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
