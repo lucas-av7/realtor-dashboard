@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, session, redirect, url_for
 from flask_mysqldb import MySQL
 import os
 from form_class.register_form import RegisterForm
@@ -23,13 +23,13 @@ def home():
     return render_template('home.html')
 
 # User register
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/painel-admin/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
     if request.method == 'POST'and form.validate():
         name = form.name.data
         email = form.email.data
-        password = sha256_crypt.encrypt(str(form.password.data))
+        password = sha256_crypt.hash(str(form.password.data))
         is_admin = False
         is_partner = True
         is_approved = False
@@ -51,9 +51,50 @@ def register():
             cur.close()
             
             flash('Você se cadastrou com sucesso, faça o login.', 'success')
-            return render_template('home.html')
+            return redirect(url_for('login'))
+
     return render_template('register.html', form=form)
 
+
+# User Login
+@app.route('/painel-admin/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Get Form Fields
+        email = request.form['email']
+        password_candidate = request.form['password']
+        
+        # Create cursor
+        cur = mysql.connection.cursor()
+        
+        # Get user by username
+        result = cur.execute('SELECT * FROM users WHERE email = %s', [email])
+        if result > 0:
+            # Get stored hash
+            data = cur.fetchone()
+            password = data['password']
+            name = data['name']
+            
+            # Compare passwords
+            if sha256_crypt.verify(password_candidate, password):
+                # Passed
+                session['logged_in'] = True
+                session['email'] = email
+                session['name'] = name
+                
+                flash('Você está logado!', 'success')
+                return redirect(url_for('home'))
+            else:
+                error = 'Usuário ou senha inválido'
+                return render_template('login.html', error=error)
+        else:
+            error = 'Usuário ou senha inválido'
+            return render_template('login.html', error=error)
+        
+        # Close connection
+        cur.close()
+    
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.secret_key=os.environ.get("SECRET_KEY")
