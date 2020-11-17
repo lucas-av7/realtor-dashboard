@@ -9,6 +9,6 @@ def is_logged_in(f):
         if 'logged_in' in session:
             return f(*args, **kwargs)
         else:
-            flash('Acesso não autorizado, faça login primeiro', 'danger')
+            flash('Acesso não autorizado, faça login primeiro.', 'danger')
             return redirect(url_for('login'))
     return wrap

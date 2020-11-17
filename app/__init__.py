@@ -100,6 +100,15 @@ def login():
     return render_template('login.html')
 
 
+# User Logout
+@app.route('/painel-admin/logout')
+@is_logged_in # Check if the user is logged in
+def logout():
+    session.clear()
+    flash('Você saiu com sucesso', 'success')
+    return redirect(url_for('login'))
+
+
 # Dashboard
 @app.route('/painel-admin/dashboard')
 @is_logged_in # Check if the user is logged in
