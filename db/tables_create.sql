@@ -1,7 +1,7 @@
 -- Users
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `id` INTEGER PRIMARY KEY,
+  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
   `is_admin` BOOLEAN,
   `is_partner` BOOLEAN,
   `is_approved` BOOLEAN,
@@ -14,7 +14,7 @@ CREATE TABLE `users` (
 -- products
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE IF NOT EXISTS `products` (
-  `id` INTEGER PRIMARY KEY,
+  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
   `category_id` VARCHAR(100) NOT NULL,
   `created_by` INTEGER,
   `description` TEXT NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `products` (
 -- photos
 DROP TABLE IF EXISTS `photos`;
 CREATE TABLE IF NOT EXISTS `photos` (
-  `id` INTEGER PRIMARY KEY,
+  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
   `product_id` INTEGER,
   `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `url` VARCHAR(200) NOT NULL
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `photos` (
 -- Categories
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
-  `id` INTEGER PRIMARY KEY,
+  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
   `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `title` VARCHAR(100) NOT NULL
 );
