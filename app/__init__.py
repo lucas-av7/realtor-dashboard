@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 import os
 from form_class.register_form import RegisterForm
 from passlib.hash import sha256_crypt
+from decorators.logged import is_logged_in
 
 app = Flask(__name__)
 
@@ -74,6 +75,7 @@ def login():
             data = cur.fetchone()
             password = data['password']
             name = data['name']
+            user_id = data['id']
             
             # Compare passwords
             if sha256_crypt.verify(password_candidate, password):
@@ -81,9 +83,10 @@ def login():
                 session['logged_in'] = True
                 session['email'] = email
                 session['name'] = name
+                session['user_id'] = user_id
                 
                 flash('Você está logado!', 'success')
-                return redirect(url_for('home'))
+                return redirect(url_for('dashboard'))
             else:
                 error = 'Usuário ou senha inválido'
                 return render_template('login.html', error=error)
@@ -95,6 +98,14 @@ def login():
         cur.close()
     
     return render_template('login.html')
+
+
+# Dashboard
+@app.route('/painel-admin/dashboard')
+@is_logged_in # Check if the user is logged in
+def dashboard():
+    return render_template('dashboard.html')
+
 
 if __name__ == '__main__':
     app.secret_key=os.environ.get("SECRET_KEY")
