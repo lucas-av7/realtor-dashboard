@@ -15,9 +15,11 @@ app.config['MYSQL_CURSORCLASS'] = os.environ.get("MYSQL_CURSORCLASS")
 # Init MySQL
 mysql = MySQL(app)
 
-@app.route('/')
+# Home page
+@app.route('/painel-admin')
 def home():
-    return 'home'
+    return render_template('home.html')
+
 
 if __name__ == '__main__':
     app.secret_key=os.environ.get("SECRET_KEY")
