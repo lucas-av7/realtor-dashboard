@@ -11,7 +11,7 @@ def categories():
     # Create cursor
     cur = current_app.db.connection.cursor()
 
-    result = cur.execute('SELECT * FROM categories')
+    result = cur.execute('SELECT * FROM categories ORDER BY title ASC')
     categories = cur.fetchall()
     
     if result > 0:
