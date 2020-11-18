@@ -1,30 +1,13 @@
-from flask import Flask, render_template, request, flash, session, redirect, url_for
-from flask_mysqldb import MySQL
-import os
-from form_class.register_form import RegisterForm
+from flask import Blueprint, current_app, request, flash, render_template, redirect, url_for, session
+from decorators import is_logged_in
 from passlib.hash import sha256_crypt
-from decorators.logged import is_logged_in
+from form_class import RegisterForm
 
-app = Flask(__name__)
 
-# Config MySql
-app.config['MYSQL_HOST'] = os.environ.get("MYSQL_HOST")
-app.config['MYSQL_USER'] = os.environ.get("MYSQL_USER")
-app.config['MYSQL_PASSWORD'] = os.environ.get("MYSQL_PASSWORD")
-app.config['MYSQL_DB'] = os.environ.get("MYSQL_DB")
-app.config['MYSQL_UNIX_SOCKET'] = os.environ.get("MYSQL_UNIX_SOCKET")
-app.config['MYSQL_CURSORCLASS'] = os.environ.get("MYSQL_CURSORCLASS")
-
-# Init MySQL
-mysql = MySQL(app)
-
-# Home page
-@app.route('/painel-admin')
-def home():
-    return render_template('home.html')
+bp_users = Blueprint('users', __name__)
 
 # User register
-@app.route('/painel-admin/register', methods=['GET', 'POST'])
+@bp_users.route('/painel-admin/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
     if request.method == 'POST'and form.validate():
@@ -36,7 +19,7 @@ def register():
         is_approved = False
 
         # Create cursor
-        cur = mysql.connection.cursor()
+        cur = current_app.db.connection.cursor()
         
         cur.execute('SELECT * FROM users WHERE email = %s', [email])
         duplicate = cur.fetchone()
@@ -48,17 +31,17 @@ def register():
                         (name, email, password, is_admin, is_partner, is_approved))
             
             # Commit to DB and Close connection
-            mysql.connection.commit()
+            current_app.db.connection.commit()
             cur.close()
             
             flash('Você se cadastrou com sucesso, faça o login.', 'success')
-            return redirect(url_for('login'))
+            return redirect(url_for('users.login'))
 
     return render_template('register.html', form=form)
 
 
 # User Login
-@app.route('/painel-admin/login', methods=['GET', 'POST'])
+@bp_users.route('/painel-admin/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Get Form Fields
@@ -66,7 +49,7 @@ def login():
         password_candidate = request.form['password']
         
         # Create cursor
-        cur = mysql.connection.cursor()
+        cur = current_app.db.connection.cursor()
         
         # Get user by username
         result = cur.execute('SELECT * FROM users WHERE email = %s', [email])
@@ -101,21 +84,9 @@ def login():
 
 
 # User Logout
-@app.route('/painel-admin/logout')
+@bp_users.route('/painel-admin/logout')
 @is_logged_in # Check if the user is logged in
 def logout():
     session.clear()
     flash('Você saiu com sucesso', 'success')
-    return redirect(url_for('login'))
-
-
-# Dashboard
-@app.route('/painel-admin/dashboard')
-@is_logged_in # Check if the user is logged in
-def dashboard():
-    return render_template('dashboard.html')
-
-
-if __name__ == '__main__':
-    app.secret_key=os.environ.get("SECRET_KEY")
-    app.run(debug=os.environ.get("FLASK_DEBUG"))
+    return redirect(url_for('users.login'))

@@ -5,18 +5,20 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="#">Categorias</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Imóveis</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Corretores</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Dados da loja</a>
-      </li>
+      {% if session.logged_in %}
+        <li class="nav-item">
+          <a class="nav-link" href="/painel-admin/categories">Categorias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Imóveis</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Corretores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Dados da loja</a>
+        </li>
+      {% endif %}
     </ul>
     
     <ul class="navbar-nav navbar-right">

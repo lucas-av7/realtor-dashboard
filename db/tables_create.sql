@@ -5,9 +5,9 @@ CREATE TABLE `users` (
   `is_admin` BOOLEAN,
   `is_partner` BOOLEAN,
   `is_approved` BOOLEAN,
-  `email` VARCHAR(100) NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
-  `password` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(30) NOT NULL,
   `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -37,5 +37,5 @@ DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
   `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `title` VARCHAR(100) NOT NULL
+  `title` VARCHAR(30) NOT NULL
 );

@@ -1,0 +1,1 @@
+from .logged import is_logged_in
