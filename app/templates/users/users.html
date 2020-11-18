@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h3>Usuários</h3>
+  <table class="table table-striped">
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Status</th>
+      <th>Data de registro</th>
+      <th></th>
+      <th></th>
+    </tr>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      {% if user.is_approved %}
+        <td>
+          <form action="{{url_for('users.status_user', id=user.id, status=False)}}" method="POST">
+            <input title="Remover aprovação do usuário" type="submit" value="Aprovado" class="btn btn-outline-success btn-sm">
+          </form>
+        </td>
+      {% else %}
+        <td>
+          <form action="{{url_for('users.status_user', id=user.id, status=True)}}" method="POST">
+            <input title="Aprovar usuário" type="submit" value="Pendente" class="btn btn-outline-warning btn-sm">
+          </form>
+        </td>
+      {% endif %}
+      <td>{{ user.register_date.strftime("%d/%m/%y - %H:%M") }}</td>
+      <td>
+        <a title="Editar usuário" href="users/edit_user/{{user.id}}" class="btn btn-outline-secondary float-right btn-sm">Editar</a>
+        </form>
+      </td>
+      <td>
+        <form action="{{url_for('users.delete_user', id=user.id)}}" method="POST">
+          <input title="Deletar usuário" type="submit" value="Deletar" class="btn btn-danger btn-sm">
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <hr>
+{% endblock %}

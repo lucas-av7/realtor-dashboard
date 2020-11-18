@@ -14,13 +14,13 @@
       <td></td>
       <td>
         <form action="{{url_for('categories.delete_category', id=category.id)}}" method="POST">
-          <input type="submit" value="Deletar" class="btn btn-danger float-right">
+          <input type="submit" value="Deletar" class="btn btn-danger float-right btn-sm">
         </form>
-        <a href="categories/edit_category/{{category.id}}" class="btn btn-outline-secondary float-right mr-2">Editar</a>
+        <a href="categories/edit_category/{{category.id}}" class="btn btn-outline-secondary float-right mr-2 btn-sm">Editar</a>
       </td>
     </tr>
     {% endfor %}
   </table>
   <hr>
-  <a href="/painel-admin/categories/add_category" class="btn btn-primary">Criar Categoria</a>
+  <a href="/painel-admin/categories/add_category" class="btn btn-primary ">Criar Categoria</a>
 {% endblock %}

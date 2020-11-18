@@ -15,10 +15,10 @@ def categories():
     categories = cur.fetchall()
     
     if result > 0:
-        return render_template('categories.html', categories=categories)
+        return render_template('categories/categories.html', categories=categories)
     else:
         error = 'Sem categorias cadastradas.'
-        return render_template('categories.html', error=error)
+        return render_template('categories/categories.html', error=error)
 
     # Close connection
     cur.close()
