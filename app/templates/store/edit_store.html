@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h3>Editar dados da imobiliária</h3>
+  {% from 'includes/_formhelpers.html' import render_field %}
+  <form method="POST" action="">
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        {{ render_field(form.name, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-2">
+        {{ render_field(form.phone, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-3">
+        {{ render_field(form.email, class_="form-control") }}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        {{ render_field(form.street, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-3">
+        {{ render_field(form.district, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-1">
+        {{ render_field(form.house_number, class_="form-control") }}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        {{ render_field(form.city, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-4">
+        {{ render_field(form.state, class_="form-control") }}
+      </div>
+    </div>
+    <p><input type="submit" class="btn btn-primary" value="Salvar dados"></p>
+  </form>
+{% endblock %}

@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for
 from flask_mysqldb import MySQL
 import os
-from form_class import RegisterForm, CategoryForm
-from passlib.hash import sha256_crypt
 from decorators import is_logged_in
 
 app = Flask(__name__)
@@ -38,6 +36,8 @@ from users import bp_users
 app.register_blueprint(bp_users)
 from categories import bp_categories
 app.register_blueprint(bp_categories)
+from store import bp_store
+app.register_blueprint(bp_store)
 
 
 if __name__ == '__main__':

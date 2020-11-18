@@ -39,3 +39,17 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `title` VARCHAR(30) NOT NULL
 );
+
+-- Store Info
+DROP TABLE IF EXISTS `store`;
+CREATE TABLE IF NOT EXISTS `store` (
+  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(50) NOT NULL,
+  `phone` VARCHAR(50) NOT NULL,
+  `email` VARCHAR(50) NOT NULL,
+  `street` VARCHAR(50) NOT NULL,
+  `district` VARCHAR(50) NOT NULL,
+  `house_number` VARCHAR(30) NOT NULL,
+  `city` VARCHAR(30) NOT NULL,
+  `state` VARCHAR(30) NOT NULL
+);

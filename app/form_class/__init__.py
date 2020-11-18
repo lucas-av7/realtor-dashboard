@@ -18,3 +18,13 @@ class EditUserForm(Form):
 class CategoryForm(Form):
     title = StringField(u'Título', validators=[validators.Length(min=5, max=30, message='Mínimo 5 letras e máximo 30 letras')])
     
+    
+class StoreForm(Form):
+    name = StringField(u'Nome da loja')
+    phone = StringField(u'Telefone')
+    email = StringField(u'E-mail')
+    street = StringField(u'Rua')
+    district = StringField(u'Bairro')
+    house_number = StringField(u'Número')
+    city = StringField(u'Cidade')
+    state = StringField(u'Estado')
