@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="d-flex justify-content-between mb-3">
+    <h3>Imóveis</h3>
+    <a href="/painel-admin/products/add_product" class="btn btn-primary ">Cadastrar Imóvel</a>
+  </div>
+  <table class="table table-striped">
+    <tr>
+      <th>ID</th>
+      <th>Título</th>
+      <th>Criado por</th>
+      <th>Categoria</th>
+      <th>Modalidade</th>
+      <th style="width: 215px;" class="text-center">Ações</th>
+    </tr>
+    {% for product in products %}
+    <tr>
+      <td>{{ product.id }}</td>
+      <td class='{{"text-success" if product.is_active == 1 else "text-danger"}}'>{{ product.title }}</td>
+      <td>{{ product.created_by }}</td>
+      <td>{{ product.category }}</td>
+      {% if product.modality == 'rent' %}
+        <td>Aluguel</td>
+      {% elif product.modality == 'sell' %}
+        <td>Venda</td>
+      {% else %}
+        <td>Desconhecido</td>
+      {% endif %}
+      <td>
+        <form action="{{url_for('products.delete_product', id=product.id)}}" method="POST">
+          <input title="Deletar imóvel" type="submit" value="Deletar" class="btn btn-danger btn-sm float-right">
+        </form>
+        <a title="Editar imóvel" href="products/edit_product/{{product.id}}" class="btn btn-outline-secondary float-right btn-sm mr-2">Editar</a>
+        <a title="Ver fotos" href="products/photos/{{product.id}}" class="btn btn-outline-primary float-right btn-sm mr-2">Fotos</a>
+
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <hr>
+{% endblock %}

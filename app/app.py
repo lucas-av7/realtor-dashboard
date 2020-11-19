@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, session, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_mysqldb import MySQL
 import os
 from decorators import is_logged_in
@@ -38,6 +38,8 @@ from categories import bp_categories
 app.register_blueprint(bp_categories)
 from store import bp_store
 app.register_blueprint(bp_store)
+from products import bp_products
+app.register_blueprint(bp_products)
 
 
 if __name__ == '__main__':

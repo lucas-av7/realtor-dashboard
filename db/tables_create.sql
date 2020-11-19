@@ -11,24 +11,12 @@ CREATE TABLE `users` (
   `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- products
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE IF NOT EXISTS `products` (
-  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
-  `category_id` VARCHAR(100) NOT NULL,
-  `created_by` INTEGER,
-  `description` TEXT NOT NULL,
-  `img` INTEGER NOT NULL,
-  `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `title` VARCHAR(100) NOT NULL
-);
-
 -- photos
 DROP TABLE IF EXISTS `photos`;
 CREATE TABLE IF NOT EXISTS `photos` (
   `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
+  `main` BOOLEAN,
   `product_id` INTEGER,
-  `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `url` VARCHAR(200) NOT NULL
 );
 
@@ -36,7 +24,6 @@ CREATE TABLE IF NOT EXISTS `photos` (
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
-  `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `title` VARCHAR(30) NOT NULL
 );
 
@@ -52,4 +39,26 @@ CREATE TABLE IF NOT EXISTS `store` (
   `house_number` VARCHAR(30) NOT NULL,
   `city` VARCHAR(30) NOT NULL,
   `state` VARCHAR(30) NOT NULL
+);
+
+-- Products
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
+  `is_active` BOOLEAN,
+  `created_by` INTEGER NOT NULL,
+  `title` VARCHAR(50) NOT NULL,
+  `category` INTEGER NOT NULL,
+  `rooms` VARCHAR(50) NOT NULL,
+  `bathrooms` VARCHAR(50) NOT NULL,
+  `area` VARCHAR(50) NOT NULL,
+  `price` VARCHAR(50) NOT NULL,
+  `cond_fare` VARCHAR(50) NOT NULL,
+  `iptu_fare` VARCHAR(50) NOT NULL,
+  `modality` VARCHAR(50) NOT NULL,
+  `street` VARCHAR(50) NOT NULL,
+  `district` VARCHAR(50) NOT NULL,
+  `city` VARCHAR(30) NOT NULL,
+  `state` VARCHAR(30) NOT NULL,
+  `description` TEXT NOT NULL
 );

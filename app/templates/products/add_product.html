@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h3>Cadastrar Imóvel</h3>
+  {% from 'includes/_formhelpers.html' import render_field %}
+  <form method="POST" action="">
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        {{ render_field(form.title, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-3">
+        {{ render_field(form.category, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-2">
+        {{ render_field(form.modality, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-2">
+        {{ render_field(form.price, class_="form-control") }}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        {{ render_field(form.street, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-3">
+        {{ render_field(form.district, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-2">
+        {{ render_field(form.city, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-2">
+        {{ render_field(form.state, class_="form-control") }}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        {{ render_field(form.rooms, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-2">
+        {{ render_field(form.bathrooms, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-2">
+        {{ render_field(form.area, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-2">
+        {{ render_field(form.iptu_fare, class_="form-control") }}
+      </div>
+      <div class="form-group col-md-2">
+        {{ render_field(form.cond_fare, class_="form-control") }}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-10">
+        {{ render_field(form.description, class_="form-control", id='editor') }}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        {{ render_field(form.is_active, checked=True)}}
+      </div>
+    </div>
+    <p><input type="submit" class="btn btn-primary" value="Cadastrar"></p>
+  </form>
+{% endblock %}

@@ -4,15 +4,16 @@
   <h3>Usuários</h3>
   <table class="table table-striped">
     <tr>
+      <th>ID</th>
       <th>Nome</th>
       <th>Email</th>
       <th>Status</th>
       <th>Data de registro</th>
-      <th></th>
-      <th></th>
+      <th style="width: 155px;"></th>
     </tr>
     {% for user in users %}
     <tr>
+      <td>{{ user.id }}</td>
       <td>{{ user.name }}</td>
       <td>{{ user.email }}</td>
       {% if user.is_approved %}
@@ -30,13 +31,10 @@
       {% endif %}
       <td>{{ user.register_date.strftime("%d/%m/%y - %H:%M") }}</td>
       <td>
-        <a title="Editar usuário" href="users/edit_user/{{user.id}}" class="btn btn-outline-secondary float-right btn-sm">Editar</a>
-        </form>
-      </td>
-      <td>
         <form action="{{url_for('users.delete_user', id=user.id)}}" method="POST">
-          <input title="Deletar usuário" type="submit" value="Deletar" class="btn btn-danger btn-sm">
+          <input title="Deletar usuário" type="submit" value="Deletar" class="btn btn-danger btn-sm float-right">
         </form>
+        <a title="Editar usuário" href="users/edit_user/{{user.id}}" class="btn btn-outline-secondary float-right btn-sm mr-2">Editar</a>
       </td>
     </tr>
     {% endfor %}
