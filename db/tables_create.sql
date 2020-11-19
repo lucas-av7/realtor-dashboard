@@ -12,12 +12,15 @@ CREATE TABLE `users` (
 );
 
 -- photos
-DROP TABLE IF EXISTS `photos`;
-CREATE TABLE IF NOT EXISTS `photos` (
+DROP TABLE IF EXISTS `images`;
+CREATE TABLE IF NOT EXISTS `images` (
   `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
   `main` BOOLEAN,
   `product_id` INTEGER,
-  `url` VARCHAR(200) NOT NULL
+  `url` VARCHAR(200) NOT NULL,
+  `url_thumb` VARCHAR(200) NOT NULL,
+  `url_medium` VARCHAR(200) NOT NULL,
+  `delete_url` VARCHAR(200) NOT NULL
 );
 
 -- Categories

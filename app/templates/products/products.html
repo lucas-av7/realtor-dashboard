@@ -12,7 +12,7 @@
       <th>Criado por</th>
       <th>Categoria</th>
       <th>Modalidade</th>
-      <th style="width: 215px;" class="text-center">Ações</th>
+      <th style="width: 215px;"></th>
     </tr>
     {% for product in products %}
     <tr>
@@ -32,8 +32,7 @@
           <input title="Deletar imóvel" type="submit" value="Deletar" class="btn btn-danger btn-sm float-right">
         </form>
         <a title="Editar imóvel" href="product/edit_product/{{product.id}}" class="btn btn-outline-secondary float-right btn-sm mr-2">Editar</a>
-        <a title="Ver fotos" href="product/photos/{{product.id}}" class="btn btn-outline-primary float-right btn-sm mr-2">Fotos</a>
-
+        <a title="Ver fotos" href="product/images/{{product.id}}" class="btn btn-outline-primary float-right btn-sm mr-2">Fotos</a>
       </td>
     </tr>
     {% endfor %}

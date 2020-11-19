@@ -40,7 +40,8 @@ from store import bp_store
 app.register_blueprint(bp_store)
 from products import bp_products
 app.register_blueprint(bp_products)
-
+from images import bp_images
+app.register_blueprint(bp_images)
 
 if __name__ == '__main__':
     app.secret_key=os.environ.get("SECRET_KEY")
