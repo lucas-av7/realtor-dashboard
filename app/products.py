@@ -20,12 +20,12 @@ def products():
     else:
         error = 'Sem imóveis cadastrados.'
         return render_template('products/products.html', error=error)
-    
+
 
 # Add Product
 @bp_products.route('/painel-admin/products/add_product', methods=['GET', 'POST'])
 @is_logged_in # Check if the user is logged in)
-def add_products():
+def add_product():
     # Get form
     form = ProductForm(request.form)
 
@@ -73,7 +73,7 @@ def add_products():
 
 
 # Edit Product
-@bp_products.route('/painel-admin/products/edit_product/<string:id>', methods=['GET', 'POST'])
+@bp_products.route('/painel-admin/product/edit_product/<string:id>', methods=['GET', 'POST'])
 @is_logged_in # Check if the user is logged in)
 def edit_product(id):
     # Create cursor
@@ -149,7 +149,7 @@ def edit_product(id):
 
 
 # Delete Product
-@bp_products.route('/painel-admin/products/delete_product/<string:id>', methods=['POST'])
+@bp_products.route('/painel-admin/product/delete_product/<string:id>', methods=['POST'])
 @is_logged_in
 def delete_product(id):
     # Create cursor

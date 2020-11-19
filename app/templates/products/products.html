@@ -31,8 +31,8 @@
         <form action="{{url_for('products.delete_product', id=product.id)}}" method="POST">
           <input title="Deletar imóvel" type="submit" value="Deletar" class="btn btn-danger btn-sm float-right">
         </form>
-        <a title="Editar imóvel" href="products/edit_product/{{product.id}}" class="btn btn-outline-secondary float-right btn-sm mr-2">Editar</a>
-        <a title="Ver fotos" href="products/photos/{{product.id}}" class="btn btn-outline-primary float-right btn-sm mr-2">Fotos</a>
+        <a title="Editar imóvel" href="product/edit_product/{{product.id}}" class="btn btn-outline-secondary float-right btn-sm mr-2">Editar</a>
+        <a title="Ver fotos" href="product/photos/{{product.id}}" class="btn btn-outline-primary float-right btn-sm mr-2">Fotos</a>
 
       </td>
     </tr>
