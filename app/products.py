@@ -174,6 +174,7 @@ def delete_product(id):
     if created_by == user_id or 'is_admin' in session:
         # Execute
         cur.execute('DELETE FROM products WHERE id = %s', [id])
+        cur.execute('DELETE FROM images WHERE product_id = %s', [id])
 
         # Commit to DB and Close connection
         current_app.db.connection.commit()
