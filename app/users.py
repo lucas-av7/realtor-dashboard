@@ -60,9 +60,14 @@ def login():
             name = data['name']
             user_id = data['id']
             is_admin = data['is_admin']
+            is_approved = data['is_approved']
             
+            # Check if the user is not approved
+            if not is_approved:
+                error = 'Sua conta ainda não foi aprovada pelo administrador'
+                return render_template('users/login.html', error=error)
             # Compare passwords
-            if sha256_crypt.verify(password_candidate, password):
+            elif sha256_crypt.verify(password_candidate, password):
                 # Passed
                 session['logged_in'] = True
                 session['email'] = email
