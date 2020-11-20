@@ -15,7 +15,7 @@ def images(product_id):
     # Get images by product ID
     result = cur.execute('SELECT products.id AS product_id, products.title AS product_title, images.id AS image_id, images.main, images.url, images.url_thumb, images.delete_url FROM products INNER JOIN images ON products.id=images.product_id WHERE product_id=%s ORDER BY images.id ASC', [product_id])
     images = cur.fetchall()
-    cur.execute('SELECT title FROM products WHERE id=%s', product_id)
+    cur.execute('SELECT title FROM products WHERE id=%s', [product_id])
     title = cur.fetchone()['title']
     
     if request.method == 'POST':
