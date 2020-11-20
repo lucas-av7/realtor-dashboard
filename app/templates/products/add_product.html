@@ -54,11 +54,13 @@
         {{ render_field(form.description, class_="form-control", id='editor') }}
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group col-md-2">
-        {{ render_field(form.is_active, checked=True)}}
+    {% if 'is_admin' in session %}
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          {{ render_field(form.is_active, checked=True)}}
+        </div>
       </div>
-    </div>
+    {% endif %}
     <p><input type="submit" class="btn btn-primary" value="Cadastrar"></p>
   </form>
 {% endblock %}
