@@ -12,3 +12,14 @@ def is_logged_in(f):
             flash('Acesso não autorizado, faça login primeiro.', 'danger')
             return redirect(url_for('users.login'))
     return wrap
+
+
+def is_admin_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'is_admin' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Acesso não autorizado para seu perfil.', 'danger')
+            return redirect(url_for('dashboard'))
+    return wrap

@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, request, flash, render_template, redirect, url_for
-from decorators import is_logged_in
+from decorators import is_logged_in, is_admin_in
 from form_class import CategoryForm
 
 bp_categories = Blueprint('categories', __name__)
@@ -7,6 +7,7 @@ bp_categories = Blueprint('categories', __name__)
 # Categories
 @bp_categories.route('/painel-admin/categories')
 @is_logged_in # Check if the user is logged in
+@is_admin_in # Check if the user is admin
 def categories():
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -27,6 +28,7 @@ def categories():
 # Create category
 @bp_categories.route('/painel-admin/categories/add_category', methods=['GET', 'POST'])
 @is_logged_in
+@is_admin_in
 def add_category():
     form = CategoryForm(request.form)
     if request.method == 'POST'and form.validate():
@@ -56,6 +58,7 @@ def add_category():
 # Edit category
 @bp_categories.route('/painel-admin/categories/edit_category/<string:id>', methods=['GET', 'POST'])
 @is_logged_in
+@is_admin_in
 def edit_category(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -90,6 +93,7 @@ def edit_category(id):
 # Delete category
 @bp_categories.route('/painel-admin/categories/delete_category/<string:id>', methods=['POST'])
 @is_logged_in
+@is_admin_in
 def delete_category(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -104,3 +108,4 @@ def delete_category(id):
     flash('Categoria deletada', 'success')
 
     return redirect(url_for('categories.categories'))
+

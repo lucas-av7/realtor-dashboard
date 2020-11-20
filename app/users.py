@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, request, flash, render_template, redirect, url_for, session
-from decorators import is_logged_in
+from decorators import is_logged_in, is_admin_in
 from passlib.hash import sha256_crypt
 from form_class import RegisterForm, EditUserForm
 
@@ -59,6 +59,7 @@ def login():
             password = data['password']
             name = data['name']
             user_id = data['id']
+            is_admin = data['is_admin']
             
             # Compare passwords
             if sha256_crypt.verify(password_candidate, password):
@@ -67,6 +68,8 @@ def login():
                 session['email'] = email
                 session['name'] = name
                 session['user_id'] = user_id
+                if is_admin:
+                    session['is_admin'] = is_admin
                 
                 flash('Você está logado!', 'success')
                 return redirect(url_for('dashboard'))
@@ -95,6 +98,7 @@ def logout():
 # List users
 @bp_users.route('/painel-admin/users')
 @is_logged_in # Check if the user is logged in
+@is_admin_in
 def users():
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -115,6 +119,7 @@ def users():
 # Edit users
 @bp_users.route('/painel-admin/users/edit_user/<string:id>', methods=['GET', 'POST'])
 @is_logged_in # Check if the user is logged in
+@is_admin_in
 def edit_user(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -153,6 +158,7 @@ def edit_user(id):
 # Delete users
 @bp_users.route('/painel-admin/users/delete_user/<string:id>', methods= ['POST'])
 @is_logged_in # Check if the user is logged in
+@is_admin_in
 def delete_user(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -171,6 +177,7 @@ def delete_user(id):
 # Change user status
 @bp_users.route('/painel-admin/users/status_user/<string:id>/<string:status>', methods=['POST'])
 @is_logged_in # Check if the user is logged in
+@is_admin_in
 def status_user(id, status):
     status = status == 'True'
     # Create cursor

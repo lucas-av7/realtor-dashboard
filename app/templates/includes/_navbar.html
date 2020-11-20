@@ -7,17 +7,19 @@
     <ul class="navbar-nav mr-auto">
       {% if session.logged_in %}
         <li class="nav-item">
-          <a class="nav-link" href="/painel-admin/categories">Categorias</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="/painel-admin/products">Imóveis</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/painel-admin/users">Corretores</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/painel-admin/edit_store">Dados da imobiliária</a>
-        </li>
+        {% if session.is_admin %}
+          <li class="nav-item">
+            <a class="nav-link" href="/painel-admin/categories">Categorias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/painel-admin/users">Corretores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/painel-admin/edit_store">Dados da imobiliária</a>
+          </li>
+        {% endif %}
       {% endif %}
     </ul>
     
