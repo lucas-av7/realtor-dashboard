@@ -3,6 +3,8 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, SelectField
 class RegisterForm(Form):
     name = StringField(u'Nome', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
     email = StringField(u'Email', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
+    phone = StringField(u'Telefone', validators=[validators.Length(
+        min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
     password = PasswordField(u'Senha', validators=[
         validators.Length(min=5, max=30, message='Mínimo 5 letras e máximo 30 letras'),
         validators.EqualTo('confirm', message='Senhas não conferem.')
@@ -13,6 +15,8 @@ class RegisterForm(Form):
 class EditUserForm(Form): 
     name = StringField(u'Nome', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
     email = StringField(u'Email', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
+    phone = StringField(u'Telefone', validators=[validators.Length(
+        min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
 
 
 class CategoryForm(Form):

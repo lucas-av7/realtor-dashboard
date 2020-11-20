@@ -13,6 +13,7 @@ def register():
     if request.method == 'POST'and form.validate():
         name = form.name.data
         email = form.email.data
+        phone = form.phone.data
         password = sha256_crypt.hash(str(form.password.data))
         is_admin = False
         is_partner = True
@@ -27,8 +28,8 @@ def register():
             flash('Este e-mail já está em uso, utilize outro e-mail ou faça login.', 'danger')
             return render_template('users/register.html', form=form)
         else:
-            cur.execute('INSERT INTO users(name, email, password, is_admin, is_partner, is_approved) VALUES (%s, %s, %s, %s, %s, %s)', 
-                        (name, email, password, is_admin, is_partner, is_approved))
+            cur.execute('INSERT INTO users(name, email, phone, password, is_admin, is_partner, is_approved) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+                        (name, email, phone, password, is_admin, is_partner, is_approved))
             
             # Commit to DB and Close connection
             current_app.db.connection.commit()
@@ -139,15 +140,18 @@ def edit_user(id):
     # Populate title field
     form.name.data = user['name']
     form.email.data = user['email']
+    form.phone.data = user['phone']
     
     if request.method == 'POST':
         form = EditUserForm(request.form)
         if form.validate():
             name = request.form['name']
             email = request.form['email']
+            phone = request.form['phone']
             
             # Execute
-            cur.execute('UPDATE users SET name=%s, email=%s WHERE id=%s', (name, email, id))
+            cur.execute(
+                'UPDATE users SET name=%s, email=%s, phone=%s WHERE id=%s', (name, email, phone, id))
             
             # Commit to DB and Close connection
             current_app.db.connection.commit()

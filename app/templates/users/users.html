@@ -4,8 +4,8 @@
   <h3>Usuários</h3>
   <table class="table table-striped">
     <tr>
-      <th>ID</th>
       <th>Nome</th>
+      <th>Telefone</th>
       <th>Email</th>
       <th>Status</th>
       <th>Data de registro</th>
@@ -13,8 +13,8 @@
     </tr>
     {% for user in users %}
     <tr>
-      <td>{{ user.id }}</td>
       <td>{{ user.name }}</td>
+      <td>{{ user.phone }}</td>
       <td>{{ user.email }}</td>
       {% if user.is_approved %}
         <td>
