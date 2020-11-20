@@ -11,6 +11,7 @@
       <th>Título</th>
       <th>Criado por</th>
       <th>Categoria</th>
+      <th>Propósito</th>
       <th>Modalidade</th>
       <th style="width: 215px;"></th>
     </tr>
@@ -20,6 +21,7 @@
       <td class='{{"text-success" if product.is_active == 1 else "text-danger"}}'>{{ product.title }}</td>
       <td>{{ product.created_by }}</td>
       <td>{{ product.category }}</td>
+      <td>{{ product.purpose }}</td>
       {% if product.modality == 'rent' %}
         <td>Aluguel</td>
       {% elif product.modality == 'sell' %}

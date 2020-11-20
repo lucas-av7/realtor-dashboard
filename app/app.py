@@ -1,3 +1,9 @@
+from images import bp_images
+from products import bp_products
+from store import bp_store
+from categories import bp_categories
+from users import bp_users
+from purposes import bp_purposes
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_mysqldb import MySQL
 import os
@@ -26,23 +32,19 @@ def home():
 
 # Dashboard
 @app.route('/painel-admin/dashboard')
-@is_logged_in # Check if the user is logged in
+@is_logged_in  # Check if the user is logged in
 def dashboard():
     return render_template('dashboard.html')
 
 
 # Blueprints
-from users import bp_users
 app.register_blueprint(bp_users)
-from categories import bp_categories
 app.register_blueprint(bp_categories)
-from store import bp_store
+app.register_blueprint(bp_purposes)
 app.register_blueprint(bp_store)
-from products import bp_products
 app.register_blueprint(bp_products)
-from images import bp_images
 app.register_blueprint(bp_images)
 
 if __name__ == '__main__':
-    app.secret_key=os.environ.get("SECRET_KEY")
+    app.secret_key = os.environ.get("SECRET_KEY")
     app.run(debug=os.environ.get("FLASK_DEBUG"))

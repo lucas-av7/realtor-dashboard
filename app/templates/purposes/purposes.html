@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="d-flex justify-content-between mb-3">
+    <h3>Propósito</h3>
+    <a href="/painel-admin/purposes/add_purpose" class="btn btn-primary ">Criar Propósito</a>
+  </div>
+  <table class="table table-striped">
+    <tr>
+      <th>Título</th>
+      <th></th>
+      <th></th>
+    </tr>
+    {% for purpose in purposes %}
+    <tr>
+      <td>{{ purpose.title }}</td>
+      <td></td>
+      <td>
+        <form action="{{url_for('purposes.delete_purpose', id=purpose.id)}}" method="POST">
+          <input type="submit" value="Deletar" class="btn btn-danger float-right btn-sm">
+        </form>
+        <a href="purposes/edit_purpose/{{purpose.id}}" class="btn btn-outline-secondary float-right mr-2 btn-sm">Editar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <hr>
+{% endblock %}

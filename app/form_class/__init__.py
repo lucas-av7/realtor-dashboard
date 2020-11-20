@@ -23,6 +23,11 @@ class CategoryForm(Form):
     title = StringField(u'Título', validators=[validators.Length(min=5, max=30, message='Mínimo 5 letras e máximo 30 letras')])
     
     
+class PurposeForm(Form):
+    title = StringField(u'Título', validators=[validators.Length(
+        min=5, max=30, message='Mínimo 5 letras e máximo 30 letras')])
+
+
 class StoreForm(Form):
     name = StringField(u'Nome da loja')
     phone = StringField(u'Telefone')
@@ -38,6 +43,7 @@ class ProductForm(Form):
     is_active = BooleanField(u'Ativo', false_values=(False, 'false', 0, '0'))
     title = StringField(u'Título', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
     category = SelectField(u'Categoria', coerce=int)
+    purpose = SelectField(u'Propósito', coerce=int)
     rooms = StringField(u'Quartos')
     bathrooms = StringField(u'Banheiros')
     parking_spaces = StringField(u'Vagas de garagem')

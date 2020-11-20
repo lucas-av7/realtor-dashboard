@@ -4,8 +4,8 @@ from form_class import ProductForm
 
 bp_products = Blueprint('products', __name__)
 
-# Products
 
+# Products
 @bp_products.route('/painel-admin/products')
 @is_logged_in  # Check if the user is logged in)
 def products():
@@ -15,10 +15,10 @@ def products():
     # Get products
     if 'is_admin' in session:
         result = cur.execute(
-            'SELECT products.is_active, products.title, products.id, users.name AS created_by, categories.title as category, products.modality FROM products INNER JOIN users INNER JOIN categories ON products.created_by=users.id AND products.category=categories.id ORDER BY category ASC')  
+            'SELECT products.is_active, products.title, products.id, users.name AS created_by, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id ORDER BY category ASC')  
     else: 
         result = cur.execute(
-            'SELECT products.is_active, products.title, products.id, users.name AS created_by, categories.title as category, products.modality FROM products INNER JOIN users INNER JOIN categories ON products.created_by=users.id AND products.category=categories.id WHERE products.created_by=%s ORDER BY category ASC', [session['user_id']])
+            'SELECT products.is_active, products.title, products.id, users.name AS created_by, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id WHERE products.created_by=%s ORDER BY category ASC', [session['user_id']])
     products = cur.fetchall()
 
     if result > 0:
@@ -39,20 +39,31 @@ def add_product():
     cur = current_app.db.connection.cursor()
 
     # Get categories
-    result = cur.execute('SELECT * FROM categories ORDER BY title ASC')
+    result_category = cur.execute('SELECT * FROM categories ORDER BY title ASC')
 
-    if result == 0:
+    if result_category == 0:
         flash('Sem categorias cadastradas, cadastre uma primeiro.', 'danger')
         return redirect(url_for('categories.categories'))
-
+    
     categories = cur.fetchall()
     form.category.choices = [(c['id'], c['title']) for c in categories]
+    
+    # Get purposes
+    result_purpose = cur.execute('SELECT * FROM purposes ORDER BY title ASC')
+
+    if result_purpose == 0:
+        flash('Sem propósitos cadastradaos, cadastre um primeiro.', 'danger')
+        return redirect(url_for('purposes.purposes'))
+
+    purposes = cur.fetchall()
+    form.purpose.choices = [(c['id'], c['title']) for c in purposes]
 
     if request.method == 'POST' and form.validate():
         is_active = form.is_active.data
         created_by = session['user_id']
         title = form.title.data
         category = form.category.data
+        purpose = form.purpose.data
         rooms = form.rooms.data
         bathrooms = form.bathrooms.data
         parking_spaces = form.parking_spaces.data
@@ -67,8 +78,8 @@ def add_product():
         state  = form.state.data
         description = form.description.data
 
-        cur.execute('INSERT INTO products(is_active, created_by, title, category, rooms, bathrooms, parking_spaces, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
-                    (is_active, created_by, title, category, rooms, bathrooms, parking_spaces, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description))
+        cur.execute('INSERT INTO products(is_active, created_by, title, category, purpose, rooms, bathrooms, parking_spaces, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                    (is_active, created_by, title, category, purpose, rooms, bathrooms, parking_spaces, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description))
 
         # Commit to DB and Close connection
         current_app.db.connection.commit()
@@ -95,19 +106,30 @@ def edit_product(id):
     form = ProductForm(request.form)
 
     # Get Categories
-    result = cur.execute('SELECT * FROM categories ORDER BY title ASC')
+    result_category = cur.execute('SELECT * FROM categories ORDER BY title ASC')
 
-    if result == 0:
+    if result_category == 0:
         flash('Sem categorias cadastradas, cadastre uma primeiro.', 'danger')
         return redirect(url_for('categories.categories'))
 
     categories = cur.fetchall()
     form.category.choices = [(c['id'], c['title']) for c in categories]
+    
+    # Get Purposes
+    result_purpose = cur.execute('SELECT * FROM purposes ORDER BY title ASC')
+
+    if result_purpose == 0:
+        flash('Sem propósitos cadastradas, cadastre um primeiro.', 'danger')
+        return redirect(url_for('purposes.purposes'))
+
+    purposes = cur.fetchall()
+    form.purpose.choices = [(c['id'], c['title']) for c in purposes]
 
     # Populate title field
     form.is_active.data = bool(product['is_active'])
     form.title.data = product['title']
     form.category.data = int(product['category'])
+    form.purpose.data = int(product['purpose'])
     form.rooms.data = product['rooms']
     form.bathrooms.data = product['bathrooms']
     form.parking_spaces.data = product['parking_spaces']
@@ -126,10 +148,12 @@ def edit_product(id):
         form = ProductForm(request.form)
         # It's needed to set the choices again to make it works
         form.category.choices = [(c['id'], c['title']) for c in categories]
+        form.purpose.choices = [(c['id'], c['title']) for c in purposes]
         if form.validate():
             is_active  = form.is_active.data
             title = form.title.data
             category = form.category.data
+            purpose = form.purpose.data
             rooms = form.rooms.data
             bathrooms = form.bathrooms.data
             parking_spaces = form.parking_spaces.data
@@ -145,8 +169,8 @@ def edit_product(id):
             description = form.description.data
 
             # Execute
-            cur.execute('UPDATE products SET is_active=%s, title=%s, category=%s, rooms=%s, bathrooms=%s, parking_spaces=%s, area=%s, price=%s, cond_fare=%s, iptu_fare=%s, modality=%s, street=%s, district=%s, city=%s, state=%s, description=%s WHERE id=%s',
-                        (is_active, title, category, rooms, bathrooms, parking_spaces, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description, id))
+            cur.execute('UPDATE products SET is_active=%s, title=%s, category=%s, purpose=%s, rooms=%s, bathrooms=%s, parking_spaces=%s, area=%s, price=%s, cond_fare=%s, iptu_fare=%s, modality=%s, street=%s, district=%s, city=%s, state=%s, description=%s WHERE id=%s',
+                        (is_active, title, category, purpose, rooms, bathrooms, parking_spaces, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description, id))
 
             # Commit to DB and Close connection
             current_app.db.connection.commit()

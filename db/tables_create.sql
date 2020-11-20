@@ -31,6 +31,13 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `title` VARCHAR(30) NOT NULL
 );
 
+-- Purposes
+DROP TABLE IF EXISTS `purposes`;
+CREATE TABLE IF NOT EXISTS `purposes` (
+  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(30) NOT NULL
+);
+
 -- Store Info
 DROP TABLE IF EXISTS `store`;
 CREATE TABLE IF NOT EXISTS `store` (
@@ -53,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `created_by` INTEGER NOT NULL,
   `title` VARCHAR(50) NOT NULL,
   `category` INTEGER NOT NULL,
+  `purpose` INTEGER NOT NULL,
   `rooms` VARCHAR(50) NOT NULL,
   `bathrooms` VARCHAR(50) NOT NULL,
   `parking_spaces` VARCHAR(50) NOT NULL,
