@@ -10,5 +10,5 @@ def is_logged_in(f):
             return f(*args, **kwargs)
         else:
             flash('Acesso não autorizado, faça login primeiro.', 'danger')
-            return redirect(url_for('login'))
+            return redirect(url_for('users.login'))
     return wrap
