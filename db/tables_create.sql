@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `category` INTEGER NOT NULL,
   `rooms` VARCHAR(50) NOT NULL,
   `bathrooms` VARCHAR(50) NOT NULL,
+  `parking_spaces` VARCHAR(50) NOT NULL,
   `area` VARCHAR(50) NOT NULL,
   `price` VARCHAR(50) NOT NULL,
   `cond_fare` VARCHAR(50) NOT NULL,

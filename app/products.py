@@ -55,6 +55,7 @@ def add_product():
         category = form.category.data
         rooms = form.rooms.data
         bathrooms = form.bathrooms.data
+        parking_spaces = form.parking_spaces.data
         area = form.area.data
         price = form.price.data
         cond_fare = form.cond_fare.data
@@ -66,8 +67,8 @@ def add_product():
         state  = form.state.data
         description = form.description.data
 
-        cur.execute('INSERT INTO products(is_active, created_by, title, category, rooms, bathrooms, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
-                    (is_active, created_by, title, category, rooms, bathrooms, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description))
+        cur.execute('INSERT INTO products(is_active, created_by, title, category, rooms, bathrooms, parking_spaces, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                    (is_active, created_by, title, category, rooms, bathrooms, parking_spaces, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description))
 
         # Commit to DB and Close connection
         current_app.db.connection.commit()
@@ -109,6 +110,7 @@ def edit_product(id):
     form.category.data = int(product['category'])
     form.rooms.data = product['rooms']
     form.bathrooms.data = product['bathrooms']
+    form.parking_spaces.data = product['parking_spaces']
     form.area.data = product['area']
     form.price.data = product['price']
     form.cond_fare.data = product['cond_fare']
@@ -130,6 +132,7 @@ def edit_product(id):
             category = form.category.data
             rooms = form.rooms.data
             bathrooms = form.bathrooms.data
+            parking_spaces = form.parking_spaces.data
             area = form.area.data
             price = form.price.data
             cond_fare = form.cond_fare.data
@@ -142,8 +145,8 @@ def edit_product(id):
             description = form.description.data
 
             # Execute
-            cur.execute('UPDATE products SET is_active=%s, title=%s, category=%s, rooms=%s, bathrooms=%s, area=%s, price=%s, cond_fare=%s, iptu_fare=%s, modality=%s, street=%s, district=%s, city=%s, state=%s, description=%s WHERE id=%s',
-                        (is_active, title, category, rooms, bathrooms, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description, id))
+            cur.execute('UPDATE products SET is_active=%s, title=%s, category=%s, rooms=%s, bathrooms=%s, parking_spaces=%s, area=%s, price=%s, cond_fare=%s, iptu_fare=%s, modality=%s, street=%s, district=%s, city=%s, state=%s, description=%s WHERE id=%s',
+                        (is_active, title, category, rooms, bathrooms, parking_spaces, area, price, cond_fare, iptu_fare, modality, street, district, city, state, description, id))
 
             # Commit to DB and Close connection
             current_app.db.connection.commit()

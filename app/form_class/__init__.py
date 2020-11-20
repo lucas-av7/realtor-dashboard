@@ -40,6 +40,7 @@ class ProductForm(Form):
     category = SelectField(u'Categoria', coerce=int)
     rooms = StringField(u'Quartos')
     bathrooms = StringField(u'Banheiros')
+    parking_spaces = StringField(u'Vagas de garagem')
     area = StringField(u'Área m2')
     price = StringField(u'Preço (R$)', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
     cond_fare = StringField(u'Condomínio (R$)')
