@@ -163,13 +163,22 @@ def delete_product(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
 
-    # Execute
-    cur.execute('DELETE FROM products WHERE id = %s', [id])
+    # Check if the user is the owner of the product or admin
+    cur.execute('SELECT created_by FROM products WHERE id = %s', [id])
+    created_by = cur.fetchone()['created_by']
+    user_id = session['user_id']
 
-    # Commit to DB and Close connection
-    current_app.db.connection.commit()
-    cur.close()
+    if created_by == user_id or 'is_admin' in session:
+        # Execute
+        cur.execute('DELETE FROM products WHERE id = %s', [id])
 
-    flash('Imóvel deletado', 'success')
+        # Commit to DB and Close connection
+        current_app.db.connection.commit()
+        cur.close()
 
-    return redirect(url_for('products.products'))
+        flash('Imóvel deletado', 'success')
+
+        return redirect(url_for('products.products'))
+    else:
+        flash('Não autorizado', 'danger')
+        return render_template('home.html')
