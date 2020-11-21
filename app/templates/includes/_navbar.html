@@ -29,17 +29,28 @@
     <ul class="navbar-nav navbar-right">
       {% if session.logged_in %}
         <li class="nav-item">
-          <a class="nav-link" href="/painel-admin/dashboard">Dashboard</a>
+          <a class="nav-link" href="/painel-admin/dashboard" title="Acessar dashboard">
+            <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-file-text-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/>
+            </svg>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/painel-admin/logout">Sair</a>
+          <a class="nav-link" href="/painel-admin/profile" title="Acessar perfil">
+            <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+            </svg>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" title="Encerrar sessão" href="/painel-admin/logout">Sair</a>
         </li>
       {% else %}
       <li class="nav-item">
-        <a class="nav-link" href="/painel-admin/register">Registrar</span></a>
+        <a class="nav-link" title="Criar conta" href="/painel-admin/register">Registrar</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/painel-admin/login">Login</a>
+        <a class="nav-link" title="Entrar no sistema" href="/painel-admin/login">Login</a>
       </li>
       {% endif %}
     </ul>
