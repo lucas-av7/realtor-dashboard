@@ -3,6 +3,7 @@ from products import bp_products
 from store import bp_store
 from categories import bp_categories
 from users import bp_users
+from profile import bp_profile
 from purposes import bp_purposes
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_mysqldb import MySQL
@@ -44,6 +45,7 @@ app.register_blueprint(bp_purposes)
 app.register_blueprint(bp_store)
 app.register_blueprint(bp_products)
 app.register_blueprint(bp_images)
+app.register_blueprint(bp_profile)
 
 if __name__ == '__main__':
     app.secret_key = os.environ.get("SECRET_KEY")

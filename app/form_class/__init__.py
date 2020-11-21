@@ -57,3 +57,14 @@ class ProductForm(Form):
     city = StringField(u'Cidade', validators=[validators.Length(min=5, max=30, message='Mínimo 5 letras e máximo 30 letras')])
     state = StringField(u'Estado', validators=[validators.Length(min=2, max=30, message='Mínimo 5 letras e máximo 30 letras')])
     description = TextAreaField(u'Descrição')
+
+
+class EditPasswordForm(Form):
+    actual_password = PasswordField(u'Senha Atual', validators=[validators.Length(
+        min=5, max=30, message='Mínimo 5 letras e máximo 30 letras')])
+    new_password = PasswordField(u'Nova Senha', validators=[
+        validators.Length(
+            min=5, max=30, message='Mínimo 5 letras e máximo 30 letras'),
+        validators.EqualTo('confirm', message='Senhas não conferem.')
+    ])
+    confirm = PasswordField('Confirme a senha')

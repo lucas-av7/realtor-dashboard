@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h3>Perfil</h3>
+  <table class="table table-striped">
+    <tr>
+      <th>Nome</th>
+      <th>Telefone</th>
+      <th>Email</th>
+      <th>Data de registro</th>
+    </tr>
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.phone }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.register_date.strftime("%d/%m/%y - %H:%M") }}</td>
+    </tr>
+  </table>
+  <hr>
+  <div>
+    <a class="btn btn-primary" href="edit_profile">Editar dados</a>
+    <a class="btn btn-secondary ml-2" href="edit_password">Alterar senha</a>
+  </div>
+{% endblock %}
