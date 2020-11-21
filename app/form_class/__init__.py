@@ -6,7 +6,7 @@ class RegisterForm(Form):
     phone = StringField(u'Telefone', validators=[validators.Length(
         min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
     password = PasswordField(u'Senha', validators=[
-        validators.Length(min=5, max=30, message='Mínimo 5 letras e máximo 30 letras'),
+        validators.Length(min=5, max=15, message='Mínimo 5 letras e máximo 15 letras'),
         validators.EqualTo('confirm', message='Senhas não conferem.')
     ])
     confirm = PasswordField('Confirme a senha')
@@ -61,10 +61,10 @@ class ProductForm(Form):
 
 class EditPasswordForm(Form):
     actual_password = PasswordField(u'Senha Atual', validators=[validators.Length(
-        min=5, max=30, message='Mínimo 5 letras e máximo 30 letras')])
+        min=5, max=15, message='Mínimo 5 letras e máximo 15 letras')])
     new_password = PasswordField(u'Nova Senha', validators=[
         validators.Length(
-            min=5, max=30, message='Mínimo 5 letras e máximo 30 letras'),
+            min=5, max=15, message='Mínimo 5 letras e máximo 15 letras'),
         validators.EqualTo('confirm', message='Senhas não conferem.')
     ])
     confirm = PasswordField('Confirme a senha')

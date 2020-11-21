@@ -1,3 +1,5 @@
+SET GLOBAL time_zone = '-3:00';
+
 -- Users
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -8,8 +10,9 @@ CREATE TABLE `users` (
   `phone` VARCHAR(50) NOT NULL,
   `email` VARCHAR(50) NOT NULL,
   `name` VARCHAR(50) NOT NULL,
-  `password` VARCHAR(30) NOT NULL,
-  `register_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `password` VARCHAR(225) NOT NULL,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  `created_at` TIMESTAMP NOT NULL
 );
 
 -- photos

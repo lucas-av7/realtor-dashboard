@@ -28,7 +28,7 @@ def register():
             flash('Este e-mail já está em uso, utilize outro e-mail ou faça login.', 'danger')
             return render_template('users/register.html', form=form)
         else:
-            cur.execute('INSERT INTO users(name, email, phone, password, is_admin, is_partner, is_approved) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+            cur.execute('INSERT INTO users(name, email, phone, password, is_admin, is_partner, is_approved, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())',
                         (name, email, phone, password, is_admin, is_partner, is_approved))
             
             # Commit to DB and Close connection
