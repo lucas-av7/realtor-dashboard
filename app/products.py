@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, request, flash, render_template, redirect, url_for, session
-from decorators import is_logged_in
+from decorators import is_logged_in, is_admin_in
 from form_class import ProductForm
 
 bp_products = Blueprint('products', __name__)
@@ -26,6 +26,30 @@ def products():
     else:
         error = 'Sem imóveis cadastrados.'
         return render_template('products/products.html', error=error)
+    
+
+# Products by user
+@bp_products.route('/painel-admin/products/<string:id>')
+@is_logged_in  # Check if the user is logged in)
+@is_admin_in  # Check if the user id admin
+def products_by_user(id):
+    # Create cursor
+    cur = current_app.db.connection.cursor()
+
+    # Ger uername
+    cur.execute('SELECT name FROM users WHERE id=%s', [id])
+    username = cur.fetchone()['name']
+
+    # Get products
+    result = cur.execute(
+        'SELECT products.is_active, products.title, products.id, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id WHERE products.created_by=%s ORDER BY category ASC', [id])
+    products = cur.fetchall()
+
+    if result > 0:
+        return render_template('products/products_by_user.html', products=products, username=username)
+    else:
+        error = 'Sem imóveis cadastrados por este usuário.'
+        return render_template('products/products_by_user.html', error=error)
 
 
 # Add Product

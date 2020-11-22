@@ -115,6 +115,15 @@ def users():
     result = cur.execute(
         'SELECT * FROM users WHERE is_partner = True ORDER BY id DESC')
     users = cur.fetchall()
+    
+    for user in users:
+        qty_active = cur.execute(
+            'SELECT * FROM products WHERE created_by=%s and is_active=True', [user['id']])
+        user['qty_active'] = qty_active
+
+        qty_pending = cur.execute(
+            'SELECT * FROM products WHERE created_by=%s and is_active=False', [user['id']])
+        user['qty_pending'] = qty_pending
 
     if result > 0:
         return render_template('users/users.html', users=users)
