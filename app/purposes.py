@@ -99,6 +99,9 @@ def edit_purpose(id):
 def delete_purpose(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
+    
+    # Set products to default purpose
+    cur.execute('UPDATE products SET purpose=1 WHERE purpose=%s', [id])
 
     # Execute
     cur.execute('DELETE FROM purposes WHERE id = %s', [id])

@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
   `title` VARCHAR(30) NOT NULL
 );
+INSERT INTO `categories`(title) VALUES ('Sem categoria');
 
 -- Purposes
 DROP TABLE IF EXISTS `purposes`;
@@ -40,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `purposes` (
   `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
   `title` VARCHAR(30) NOT NULL
 );
+INSERT INTO `purposes`(title) VALUES ('Sem propósito');
 
 -- Store Info
 DROP TABLE IF EXISTS `store`;

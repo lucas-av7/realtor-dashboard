@@ -97,6 +97,9 @@ def edit_category(id):
 def delete_category(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
+    
+    # Set products to default category
+    cur.execute('UPDATE products SET category=1 WHERE category=%s', [id])
 
     # Execute
     cur.execute('DELETE FROM categories WHERE id = %s', [id])
