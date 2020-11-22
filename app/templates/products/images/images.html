@@ -7,7 +7,11 @@
     <input id="input-img" style="display: none;" type="file" name="pic" accept="image/*" onchange="sendimage(this.files)">
     <input id="send-img" style="display: none;" type="submit">
   </form>
-  <button id="chose-img" class="btn btn-primary ">Enviar Foto</button>
+  <button id="chosen-img" class="btn btn-primary ">Enviar Foto</button>
+  <button style="display: none;" id="loading-button" class="btn btn-primary" type="button" disabled>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Enviando...
+  </button>
 </div>
 <table class="table table-striped">
   <tr>
@@ -68,9 +72,11 @@
 <hr>
 
 <script>
-  button = document.querySelector('#chose-img')
+  button = document.querySelector('#chosen-img')
   input = document.querySelector('#input-img')
   send = document.querySelector('#send-img')
+  loading = document.querySelector('#loading-button')
+
   button.addEventListener("click", () => {
     input.click()
   })
@@ -84,6 +90,8 @@
       return window.alert('Imagem maior que 5mb, reduza o tamanho primeiro.')
     } else {
       send.click()
+      button.style.display = 'none'
+      loading.style.display = 'block'
     }
   }
 </script>

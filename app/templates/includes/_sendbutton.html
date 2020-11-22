@@ -1,0 +1,15 @@
+<button id="send-button" class="btn btn-{{type}} {{size}}" type="submit">{{title}}</button>
+<button style="display: none;" id="loading-button" class="btn btn-{{type}} {{size}}" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  {{title_loading}}
+</button>
+
+<script>
+  button = document.querySelector('#send-button')
+  loading = document.querySelector('#loading-button')
+
+  button.addEventListener("click", () => {
+    button.style.display = 'none'
+    loading.style.display = 'block'
+  })
+</script>

@@ -10,7 +10,11 @@
     <div class="form-group col-md-5">
       <label>Senha</label>
       <input type="password" name="password" class="form-control" value={{request.form.password}}>
-      <button type="submit" class="btn btn-primary mt-3">Fazer Login</button>
+      <p class="mt-3">
+        {% with title='Fazer login', title_loading='Entrando...', type='primary' %}
+          {% include 'includes/_sendbutton.html' %}
+        {% endwith %}
+      </p>
     </div>
   </form>
 {% endblock %}

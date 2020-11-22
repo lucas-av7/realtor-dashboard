@@ -9,6 +9,8 @@
         {{ render_field(form.title, class_="form-control") }}
       </div>
     </div>
-    <p><input type="submit" class="btn btn-primary" value="Criar Propósito"></p>
+    {% with title='Criar propósito', title_loading='Criando...', type='primary' %}
+      {% include 'includes/_sendbutton.html' %}
+    {% endwith %}
   </form>
 {% endblock %}

@@ -67,6 +67,8 @@
         </div>
       </div>
     {% endif %}
-    <p><input type="submit" class="btn btn-primary" value="Salvar"></p>
+    {% with title='Salvar', title_loading='Salvando...', type='primary' %}
+      {% include 'includes/_sendbutton.html' %}
+    {% endwith %}
   </form>
 {% endblock %}

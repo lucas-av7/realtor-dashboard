@@ -34,6 +34,8 @@
         {{ render_field(form.state, class_="form-control") }}
       </div>
     </div>
-    <p><input type="submit" class="btn btn-primary" value="Salvar dados"></p>
+    {% with title='Salvar dados', title_loading='Salvando...', type='primary' %}
+      {% include 'includes/_sendbutton.html' %}
+    {% endwith %}
   </form>
 {% endblock %}
