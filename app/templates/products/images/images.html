@@ -4,7 +4,7 @@
 <div class="d-flex justify-content-between mb-3">
   <h3>Fotos - {{ title }}</h3>
   <form action="" method="POST" enctype="multipart/form-data">
-    <input id="input-img" style="display: none;" type="file" name="pic" accept="image/*" onchange="sendimage(this.files)">
+    <input id="input-img" style="display: none;" type="file" name="pic[]" multiple="" accept="image/*" onchange="sendimage(this.files)">
     <input id="send-img" style="display: none;" type="submit">
   </form>
   <button id="chosen-img" class="btn btn-primary ">Enviar Foto</button>
@@ -82,13 +82,26 @@
   })
 
   function sendimage(event) {
-    const isImage = event[0].type.indexOf('image')
-    const file_size = parseInt((event[0].size / (1024*1024)))
-    if(isImage == -1) {
-      return window.alert('Não é imagem')
-    } else if (file_size > 5 ){
-      return window.alert('Imagem maior que 5mb, reduza o tamanho primeiro.')
-    } else {
+    let send_allow = true
+    for (let index = 0; index < event.length; index++) {
+      const file = event[index];
+      const isImage = file.type.indexOf('image')
+      const file_size = parseInt((file.size / (1024*1024)))
+      if(isImage == -1) {
+        send_allow = false
+        return window.alert('Algum arquivo não é uma imagem.')
+        break
+      } else if (file_size > 5 ){
+        send_allow = false
+        return window.alert('Alguma imagem é maior que 5mb, reduza o tamanho primeiro.')
+        break
+      } else if (event.length > 10 ){
+        send_allow = false
+        return window.alert('Apenas 10 fotos por envio.')
+        break
+      } 
+    }
+    if(send_allow) {
       send.click()
       button.style.display = 'none'
       loading.style.display = 'block'

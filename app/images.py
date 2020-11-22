@@ -19,25 +19,26 @@ def images(product_id):
     title = cur.fetchone()['title']
     
     if request.method == 'POST':
-        pic = request.files['pic']
+        pics = request.files.getlist("pic[]")
         
-        if not pic:
-            flash('Foto não selecionada corretamente', 'danger')
+        if len(pics) == 0:
+            flash('Nenhuma foto selecionada.', 'danger')
             return render_template('products/images/images.html', images=images, title=title)
         
-        base64img = base64.b64encode(pic.read())
-        (url, url_thumb, url_medium, delete_url) = upload_image(base64img)
-        
-        photos = cur.execute('SELECT * FROM images WHERE product_id=%s and main=True', [product_id])
-        main = photos == 0
-        
-        cur.execute('INSERT INTO images(main, product_id, url, url_thumb, url_medium, delete_url) VALUES (%s, %s, %s, %s, %s, %s)', (main, product_id, url, url_thumb, url_medium, delete_url))
+        for pic in pics:
+            base64img = base64.b64encode(pic.read())
+            (url, url_thumb, url_medium, delete_url) = upload_image(base64img)
+            
+            photos = cur.execute('SELECT * FROM images WHERE product_id=%s and main=True', [product_id])
+            main = photos == 0
+            
+            cur.execute('INSERT INTO images(main, product_id, url, url_thumb, url_medium, delete_url) VALUES (%s, %s, %s, %s, %s, %s)', (main, product_id, url, url_thumb, url_medium, delete_url))
         
         # Commit to DB and Close connection
         current_app.db.connection.commit()
         cur.close()
         
-        flash('Imagem adicionada com sucesso', 'success')
+        flash('Envio realizado com sucesso', 'success')
         return redirect(url_for('images.images', product_id=product_id))
     
     
