@@ -9,20 +9,26 @@
         <li class="nav-item">
           <a class="nav-link" href="/painel-admin/products">Imóveis</a>
         </li>
-        {% if session.is_admin %}
-          <li class="nav-item">
-            <a class="nav-link" href="/painel-admin/categories">Categorias</a>
-          </li>
+          {% if session.is_admin or session.categories %}
+            <li class="nav-item">
+              <a class="nav-link" href="/painel-admin/categories">Categorias</a>
+            </li>
+          {% endif %}
+          {% if session.is_admin or session.purposes %}
           <li class="nav-item">
             <a class="nav-link" href="/painel-admin/purposes">Propósitos</a>
           </li>
+          {% endif %}
+          {% if session.is_admin or session.users %}
           <li class="nav-item">
             <a class="nav-link" href="/painel-admin/users">Corretores</a>
           </li>
+          {% endif %}
+          {% if session.is_admin or session.store %}
           <li class="nav-item">
             <a class="nav-link" href="/painel-admin/edit_store">Dados da imobiliária</a>
           </li>
-        {% endif %}
+          {% endif %}
       {% endif %}
     </ul>
     

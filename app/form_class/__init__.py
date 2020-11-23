@@ -17,6 +17,7 @@ class EditUserForm(Form):
     email = StringField(u'Email', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
     phone = StringField(u'Telefone', validators=[validators.Length(
         min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
+    role = SelectField(u'Função', coerce=int)
 
 
 class CategoryForm(Form):
@@ -68,3 +69,14 @@ class EditPasswordForm(Form):
         validators.EqualTo('confirm', message='Senhas não conferem.')
     ])
     confirm = PasswordField('Confirme a senha')
+
+
+class PermissionsForm(Form):
+    title = StringField(u'', validators=[validators.Length(
+        min=5, max=30, message='Mínimo 5 letras e máximo 30 letras')])
+    activate = BooleanField(u'', false_values=(False, 'false', 0, '0'))
+    all_products = BooleanField(u'', false_values=(False, 'false', 0, '0'))
+    categories = BooleanField(u'', false_values=(False, 'false', 0, '0'))
+    purposes = BooleanField(u'', false_values=(False, 'false', 0, '0'))
+    users = BooleanField(u'', false_values=(False, 'false', 0, '0'))
+    store = BooleanField(u'', false_values=(False, 'false', 0, '0'))

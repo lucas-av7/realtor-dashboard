@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, request, flash, render_template, redirect, url_for, session
-from decorators import is_logged_in, is_admin_in
+from decorators import is_logged_in, allow_store
 from passlib.hash import sha256_crypt
 from form_class import StoreForm
 
@@ -9,7 +9,7 @@ bp_store = Blueprint('store', __name__)
 # Edit store
 @bp_store.route('/painel-admin/edit_store', methods=['GET', 'POST'])
 @is_logged_in # Check if the user is logged in)
-@is_admin_in
+@allow_store
 def edit_store():
     # Create cursor
     cur = current_app.db.connection.cursor()

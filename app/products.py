@@ -13,7 +13,7 @@ def products():
     cur = current_app.db.connection.cursor()
 
     # Get products
-    if 'is_admin' in session:
+    if 'is_admin' in session or session['all_products']:
         result = cur.execute(
             'SELECT products.is_active, products.title, products.id, users.name AS created_by, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id ORDER BY category ASC')  
     else: 

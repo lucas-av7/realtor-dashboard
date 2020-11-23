@@ -1,14 +1,12 @@
 from flask import Blueprint, current_app, request, flash, render_template, redirect, url_for, session
-from decorators import is_logged_in, is_admin_in
+from decorators import is_logged_in, is_admin_in, allow_users
 from passlib.hash import sha256_crypt
-from form_class import RegisterForm, EditUserForm
+from form_class import RegisterForm, EditUserForm, PermissionsForm
 
 
 bp_users = Blueprint('users', __name__)
 
 # User register
-
-
 @bp_users.route('/painel-admin/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
@@ -20,6 +18,7 @@ def register():
         is_admin = False
         is_partner = True
         is_approved = False
+        role = 1
 
         # Create cursor
         cur = current_app.db.connection.cursor()
@@ -31,8 +30,8 @@ def register():
                 'Este e-mail já está em uso, utilize outro e-mail ou faça login.', 'danger')
             return render_template('users/register.html', form=form)
         else:
-            cur.execute('INSERT INTO users(name, email, phone, password, is_admin, is_partner, is_approved, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())',
-                        (name, email, phone, password, is_admin, is_partner, is_approved))
+            cur.execute('INSERT INTO users(name, email, phone, password, is_admin, is_partner, is_approved, role, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NOW())',
+                        (name, email, phone, password, is_admin, is_partner, is_approved, role))
 
             # Commit to DB and Close connection
             current_app.db.connection.commit()
@@ -65,6 +64,8 @@ def login():
             user_id = data['id']
             is_admin = data['is_admin']
             is_approved = data['is_approved']
+            is_approved = data['is_approved']
+            role = data['role']
 
             # Check if the user is not approved
             if not is_approved:
@@ -79,6 +80,15 @@ def login():
                 session['user_id'] = user_id
                 if is_admin:
                     session['is_admin'] = is_admin
+                else:
+                    cur.execute('SELECT * FROM roles WHERE id = %s', [role])
+                    permissions = cur.fetchone()
+                    session['activate'] = permissions['activate']
+                    session['all_products'] = permissions['all_products']
+                    session['categories'] = permissions['categories']
+                    session['purposes'] = permissions['purposes']
+                    session['users'] = permissions['users']
+                    session['store'] = permissions['store']
 
                 flash('Você está logado!', 'success')
                 return redirect(url_for('dashboard'))
@@ -107,7 +117,7 @@ def logout():
 # List users
 @bp_users.route('/painel-admin/users')
 @is_logged_in  # Check if the user is logged in
-@is_admin_in
+@allow_users
 def users():
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -138,7 +148,7 @@ def users():
 # Edit users
 @bp_users.route('/painel-admin/users/edit_user/<string:id>', methods=['GET', 'POST'])
 @is_logged_in  # Check if the user is logged in
-@is_admin_in
+@allow_users
 def edit_user(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -149,22 +159,31 @@ def edit_user(id):
 
     # Get form
     form = EditUserForm(request.form)
+    
+    # Get Roles
+    cur.execute('SELECT * FROM roles ORDER BY title ASC')
+
+    roles = cur.fetchall()
+    form.role.choices = [(c['id'], c['title']) for c in roles]
 
     # Populate title field
     form.name.data = user['name']
     form.email.data = user['email']
     form.phone.data = user['phone']
+    form.role.data = user['role']
 
     if request.method == 'POST':
         form = EditUserForm(request.form)
+        form.role.choices = [(c['id'], c['title']) for c in roles]
         if form.validate():
             name = request.form['name']
             email = request.form['email']
             phone = request.form['phone']
+            role = request.form['role']
 
             # Execute
             cur.execute(
-                'UPDATE users SET name=%s, email=%s, phone=%s WHERE id=%s', (name, email, phone, id))
+                'UPDATE users SET name=%s, email=%s, phone=%s, role=%s WHERE id=%s', (name, email, phone, role, id))
 
             # Commit to DB and Close connection
             current_app.db.connection.commit()
@@ -180,7 +199,7 @@ def edit_user(id):
 # Delete users
 @bp_users.route('/painel-admin/users/delete_user/<string:id>', methods=['POST'])
 @is_logged_in  # Check if the user is logged in
-@is_admin_in
+@allow_users
 def delete_user(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -205,7 +224,7 @@ def delete_user(id):
 # Change user status
 @bp_users.route('/painel-admin/users/status_user/<string:id>/<string:status>', methods=['POST'])
 @is_logged_in  # Check if the user is logged in
-@is_admin_in
+@allow_users
 def status_user(id, status):
     status = status == 'True'
     # Create cursor
@@ -221,3 +240,123 @@ def status_user(id, status):
     flash('Status do usuário atualizado', 'success')
 
     return redirect(url_for('users.users'))
+
+
+# Users roles
+@bp_users.route('/painel-admin/users/roles', methods=['GET'])
+@is_logged_in  # Check if the user is logged in
+@is_admin_in
+def users_roles():
+    # Create cursor
+    cur = current_app.db.connection.cursor()
+
+    # Get user by ID
+    cur.execute('SELECT * FROM roles ORDER BY title ASC')
+    roles = cur.fetchall()
+
+    cur.close()
+
+    return render_template('users/roles.html', roles=roles)
+
+
+# Create role
+@bp_users.route('/painel-admin/users/roles/create', methods=['GET', 'POST'])
+@is_logged_in  # Check if the user is logged in
+@is_admin_in
+def users_roles_create():
+    # Get form
+    form = PermissionsForm(request.form)
+
+    # Create cursor
+    cur = current_app.db.connection.cursor()
+
+    if request.method == 'POST' and form.validate():
+        title = form.title.data
+        activate = form.activate.data
+        all_products = form.all_products.data
+        categories = form.categories.data
+        purposes = form.purposes.data
+        users = form.users.data
+        store = form.store.data
+
+        cur.execute('INSERT INTO roles(title, activate, all_products, categories, purposes, users, store) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+                    (title, activate, all_products, categories, purposes, users, store))
+
+        # Commit to DB and Close connection
+        current_app.db.connection.commit()
+        cur.close()
+
+        flash('Você cadastrou a função com sucesso', 'success')
+        return redirect(url_for('users.users_roles'))
+
+    return render_template('users/add_role.html', form=form)
+
+
+# Edit role
+@bp_users.route('/painel-admin/users/roles/edit_role/<string:id>', methods=['GET', 'POST'])
+@is_logged_in
+@is_admin_in
+def edit_role(id):
+    # Create cursor
+    cur = current_app.db.connection.cursor()
+
+    # Get role by ID
+    cur.execute('SELECT * FROM roles WHERE id=%s', [id])
+    role = cur.fetchone()
+
+    # Get form
+    form = PermissionsForm(request.form)
+
+    # Populate role fields
+    form.title.data = role['title']
+    form.activate.data = bool(role['activate'])
+    form.all_products.data = bool(role['all_products'])
+    form.categories.data = bool(role['categories'])
+    form.purposes.data = bool(role['purposes'])
+    form.users.data = bool(role['users'])
+    form.store.data = bool(role['store'])
+
+    if request.method == 'POST':
+        form = PermissionsForm(request.form)
+
+        title = form.title.data
+        activate = form.activate.data
+        all_products = form.all_products.data
+        categories = form.categories.data
+        purposes = form.purposes.data
+        users = form.users.data
+        store = form.store.data
+
+        # Execute
+        cur.execute('UPDATE roles SET title=%s, activate=%s, all_products=%s, categories=%s, purposes=%s, users=%s, store=%s WHERE id=%s',
+                    (title, activate, all_products, categories, purposes, users, store, id))
+
+        # Commit to DB and Close connection
+        current_app.db.connection.commit()
+        cur.close()
+
+        flash('Permissões atualizadas', 'success')
+
+        return redirect(url_for('users.users_roles'))
+
+    return render_template('users/edit_role.html', form=form)
+
+
+# Delete role
+@bp_users.route('/painel-admin/users/delete_role/<string:id>', methods=['POST'])
+@is_logged_in
+@is_admin_in
+def delete_role(id):
+    # Create cursor
+    cur = current_app.db.connection.cursor()
+
+    # Execute
+    cur.execute('DELETE FROM roles WHERE id = %s', [id])
+
+    # Commit to DB and Close connection
+    current_app.db.connection.commit()
+    cur.close()
+
+    flash('Função deletada', 'success')
+
+    return redirect(url_for('users.users_roles'))

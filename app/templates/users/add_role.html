@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h3>Permissões</h3>
+  {% from '/includes/_formhelpers.html' import render_field %}
+  <form method="POST" action="">
+    <table class="table table-striped">
+      <tr class="text-center">
+        <th class="text-left">Título</th>
+        <th>Ativar Imóvel</th>
+        <th>Todos Imóveis</th>
+        <th>Categorias</th>
+        <th>Propósitos</th>
+        <th>Usuários</th>
+        <th>Imobiliária</th>
+      </tr>
+      <tr class="text-center">
+        <td>{{ render_field(form.title, class_="form-control") }}</td>
+        <td>{{ render_field(form.activate, class_="form-control") }}</td>
+        <td>{{ render_field(form.all_products, class_="form-control") }}</td>
+        <td>{{ render_field(form.categories, class_="form-control") }}</td>
+        <td>{{ render_field(form.purposes, class_="form-control") }}</td>
+        <td>{{ render_field(form.users, class_="form-control") }}</td>
+        <td>{{ render_field(form.store, class_="form-control") }}</td>
+      </tr>
+    </table>
+    {% with title='Criar função', title_loading='Criando...', type='primary' %}
+      {% include 'includes/_sendbutton.html' %}
+    {% endwith %}
+  </form>
+{% endblock %}

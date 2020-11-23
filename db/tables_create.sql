@@ -7,6 +7,7 @@ CREATE TABLE `users` (
   `is_admin` BOOLEAN,
   `is_partner` BOOLEAN,
   `is_approved` BOOLEAN,
+  `role` INTEGER NOT NULL,
   `phone` VARCHAR(50) NOT NULL,
   `email` VARCHAR(50) NOT NULL,
   `name` VARCHAR(50) NOT NULL,
@@ -14,6 +15,20 @@ CREATE TABLE `users` (
   `updated_at` TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
   `created_at` TIMESTAMP NOT NULL
 );
+
+-- Roles/Permissions
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(30) NOT NULL,
+  `activate` BOOLEAN,
+  `all_products` BOOLEAN,
+  `categories` BOOLEAN,
+  `purposes` BOOLEAN,
+  `users` BOOLEAN,
+  `store` BOOLEAN
+);
+INSERT INTO `roles`(title, activate, all_products, categories, purposes, users, store) VALUES ('Padrão', False, False, False, False, False, False);
 
 -- photos
 DROP TABLE IF EXISTS `images`;

@@ -1,15 +1,13 @@
 from flask import Blueprint, current_app, request, flash, render_template, redirect, url_for
-from decorators import is_logged_in, is_admin_in
+from decorators import is_logged_in, allow_purposes
 from form_class import PurposeForm
 
 bp_purposes = Blueprint('purposes', __name__)
 
 # purposes
-
-
 @bp_purposes.route('/painel-admin/purposes')
 @is_logged_in  # Check if the user is logged in
-@is_admin_in  # Check if the user is admin
+@allow_purposes  # Check if the user is admin
 def purposes():
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -30,7 +28,7 @@ def purposes():
 # Create purpose
 @bp_purposes.route('/painel-admin/purposes/add_purpose', methods=['GET', 'POST'])
 @is_logged_in
-@is_admin_in
+@allow_purposes
 def add_purpose():
     form = PurposeForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -60,7 +58,7 @@ def add_purpose():
 # Edit purpose
 @bp_purposes.route('/painel-admin/purposes/edit_purpose/<string:id>', methods=['GET', 'POST'])
 @is_logged_in
-@is_admin_in
+@allow_purposes
 def edit_purpose(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -95,7 +93,7 @@ def edit_purpose(id):
 # Delete purpose
 @bp_purposes.route('/painel-admin/purposes/delete_purpose/<string:id>', methods=['POST'])
 @is_logged_in
-@is_admin_in
+@allow_purposes
 def delete_purpose(id):
     # Create cursor
     cur = current_app.db.connection.cursor()

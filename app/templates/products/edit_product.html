@@ -60,7 +60,7 @@
         {{ render_field(form.description, class_="form-control", id='editor') }}
       </div>
     </div>
-    {% if 'is_admin' in session %}
+    {% if 'is_admin' in session or session.activate %}
       <div class="form-row">
         <div class="form-group col-md-2">
           {{ render_field(form.is_active)}}
