@@ -123,8 +123,9 @@ def users():
     cur = current_app.db.connection.cursor()
 
     result = cur.execute(
-        'SELECT * FROM users WHERE is_partner = True ORDER BY id DESC')
+        'SELECT users.id as id, name, is_approved, roles.title as role, phone, email FROM users INNER JOIN roles ON users.role=roles.id WHERE is_partner = True ORDER BY users.id DESC')
     users = cur.fetchall()
+    print(users)
     
     for user in users:
         qty_active = cur.execute(
