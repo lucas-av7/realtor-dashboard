@@ -33,7 +33,6 @@ def add_category():
     form = CategoryForm(request.form)
     if request.method == 'POST'and form.validate():
         title = form.title.data
-        print(title)
         # Create cursor
         cur = current_app.db.connection.cursor()
         

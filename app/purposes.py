@@ -33,7 +33,6 @@ def add_purpose():
     form = PurposeForm(request.form)
     if request.method == 'POST' and form.validate():
         title = form.title.data
-        print(title)
         # Create cursor
         cur = current_app.db.connection.cursor()
 

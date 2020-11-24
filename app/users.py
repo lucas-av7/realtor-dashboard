@@ -126,7 +126,6 @@ def users():
     result = cur.execute(
         'SELECT users.id as id, name, is_approved, roles.title as role, phone, email FROM users INNER JOIN roles ON users.role=roles.id WHERE is_admin = False AND users.id != %s ORDER BY users.id DESC', [user_id])
     users = cur.fetchall()
-    print(users)
     
     for user in users:
         qty_active = cur.execute(
