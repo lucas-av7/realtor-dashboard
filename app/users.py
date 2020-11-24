@@ -16,7 +16,6 @@ def register():
         phone = form.phone.data
         password = sha256_crypt.hash(str(form.password.data))
         is_admin = False
-        is_partner = True
         is_approved = False
         role = 1
 
@@ -30,8 +29,8 @@ def register():
                 'Este e-mail já está em uso, utilize outro e-mail ou faça login.', 'danger')
             return render_template('users/register.html', form=form)
         else:
-            cur.execute('INSERT INTO users(name, email, phone, password, is_admin, is_partner, is_approved, role, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NOW())',
-                        (name, email, phone, password, is_admin, is_partner, is_approved, role))
+            cur.execute('INSERT INTO users(name, email, phone, password, is_admin, is_approved, role, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())',
+                        (name, email, phone, password, is_admin, is_approved, role))
 
             # Commit to DB and Close connection
             current_app.db.connection.commit()
@@ -121,9 +120,11 @@ def logout():
 def users():
     # Create cursor
     cur = current_app.db.connection.cursor()
+    
+    user_id = session['user_id']
 
     result = cur.execute(
-        'SELECT users.id as id, name, is_approved, roles.title as role, phone, email FROM users INNER JOIN roles ON users.role=roles.id WHERE is_partner = True ORDER BY users.id DESC')
+        'SELECT users.id as id, name, is_approved, roles.title as role, phone, email FROM users INNER JOIN roles ON users.role=roles.id WHERE is_admin = False AND users.id != %s ORDER BY users.id DESC', [user_id])
     users = cur.fetchall()
     print(users)
     
@@ -139,7 +140,7 @@ def users():
     if result > 0:
         return render_template('users/users.html', users=users)
     else:
-        error = 'Sem usuários parceiros cadastrados.'
+        error = 'Sem usuários cadastrados.'
         return render_template('users/users.html', error=error)
 
     # Close connection

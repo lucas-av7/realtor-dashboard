@@ -5,7 +5,6 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
   `is_admin` BOOLEAN,
-  `is_partner` BOOLEAN,
   `is_approved` BOOLEAN,
   `role` INTEGER NOT NULL,
   `phone` VARCHAR(50) NOT NULL,
