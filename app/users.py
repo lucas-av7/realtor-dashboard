@@ -124,7 +124,7 @@ def users():
     user_id = session['user_id']
 
     result = cur.execute(
-        'SELECT users.id as id, name, is_approved, roles.title as role, phone, email FROM users INNER JOIN roles ON users.role=roles.id WHERE is_admin = False AND users.id != %s ORDER BY users.id DESC', [user_id])
+        'SELECT users.id as id, name, is_approved, roles.title as role, phone, email FROM users INNER JOIN roles ON users.role=roles.id WHERE is_admin = False AND users.id != %s ORDER BY users.name ASC', [user_id])
     users = cur.fetchall()
     
     for user in users:

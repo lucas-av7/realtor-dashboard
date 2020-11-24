@@ -15,10 +15,10 @@ def products():
     # Get products
     if 'is_admin' in session or session['all_products']:
         result = cur.execute(
-            'SELECT products.is_active, products.title, products.id, users.name AS created_by, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id ORDER BY category ASC')  
+            'SELECT products.is_active, products.title, products.id, users.name AS created_by, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id ORDER BY products.id DESC')
     else: 
         result = cur.execute(
-            'SELECT products.is_active, products.title, products.id, users.name AS created_by, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id WHERE products.created_by=%s ORDER BY category ASC', [session['user_id']])
+            'SELECT products.is_active, products.title, products.id, users.name AS created_by, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id WHERE products.created_by=%s ORDER BY products.id DESC', [session['user_id']])
     products = cur.fetchall()
 
     if result > 0:
@@ -42,7 +42,7 @@ def products_by_user(id):
 
     # Get products
     result = cur.execute(
-        'SELECT products.is_active, products.title, products.id, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id WHERE products.created_by=%s ORDER BY category ASC', [id])
+        'SELECT products.is_active, products.title, products.id, categories.title as category, purposes.title as purpose, products.modality FROM products INNER JOIN users INNER JOIN categories INNER JOIN purposes ON products.created_by=users.id AND products.category=categories.id AND products.purpose=purposes.id WHERE products.created_by=%s ORDER BY products.id DESC', [id])
     products = cur.fetchall()
 
     if result > 0:
