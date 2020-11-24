@@ -17,7 +17,8 @@
     {% for product in products %}
     <tr>
       <td>IM{{ product.id }}</td>
-      <td class='{{"text-success" if product.is_active == 1 else "text-danger"}}'>{{ product.title }}</td>
+      <td class='{{"text-success" if product.is_active == 1 else "text-danger"}}'
+        title='{{"Imóvel ativo" if product.is_active == 1 else "Imóvel desativado"}}'>{{ product.title }}</td>
       <td>{{ product.created_by }}</td>
       <td>{{ product.category }}</td>
       {% if product.modality == 'rent' %}

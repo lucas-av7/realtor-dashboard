@@ -86,7 +86,7 @@
           {% endif %}
         </td>
         <td>
-          {% if role.id != 1 %}
+          {% if role.id > 2 %}
             <form action="{{url_for('users.delete_role', id=role.id)}}" method="POST">
               {% with size='btn-sm' %}
                 {% include 'includes/_deletebutton.html' %}

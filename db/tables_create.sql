@@ -27,7 +27,9 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `users` BOOLEAN,
   `store` BOOLEAN
 );
-INSERT INTO `roles`(title, activate, all_products, categories, purposes, users, store) VALUES ('Padrão', False, False, False, False, False, False);
+INSERT INTO `roles`(title, activate, all_products, categories, purposes, users, store) VALUES ('Cliente', False, False, False, False, False, False);
+INSERT INTO `roles`(title, activate, all_products, categories, purposes, users, store) VALUES ('Corretor', False, False, False, False, False, False);
+INSERT INTO `roles`(title, activate, all_products, categories, purposes, users, store) VALUES ('Corretor parceiro', True, False, False, False, False, False);
 
 -- photos
 DROP TABLE IF EXISTS `images`;
@@ -61,15 +63,17 @@ INSERT INTO `purposes`(title) VALUES ('Sem propósito');
 DROP TABLE IF EXISTS `store`;
 CREATE TABLE IF NOT EXISTS `store` (
   `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(50) NOT NULL,
-  `phone` VARCHAR(50) NOT NULL,
-  `email` VARCHAR(50) NOT NULL,
-  `street` VARCHAR(50) NOT NULL,
-  `district` VARCHAR(50) NOT NULL,
-  `house_number` VARCHAR(30) NOT NULL,
-  `city` VARCHAR(30) NOT NULL,
-  `state` VARCHAR(30) NOT NULL
+  `name` VARCHAR(50),
+  `phone` VARCHAR(50),
+  `email` VARCHAR(50),
+  `street` VARCHAR(50),
+  `district` VARCHAR(50),
+  `house_number` VARCHAR(30),
+  `city` VARCHAR(30),
+  `state` VARCHAR(30),
+  `auto_active_user` BOOLEAN
 );
+INSERT INTO store(auto_active_user) VALUES(TRUE)
 
 -- Products
 DROP TABLE IF EXISTS `products`;

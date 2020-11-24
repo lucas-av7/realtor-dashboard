@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, TextAreaField, PasswordField, SelectField, BooleanField, validators
+from wtforms import Form, StringField, TextAreaField, PasswordField, SelectField, BooleanField, RadioField, validators
 
 class RegisterForm(Form):
     name = StringField(u'Nome', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
@@ -10,6 +10,8 @@ class RegisterForm(Form):
         validators.EqualTo('confirm', message='Senhas não conferem.')
     ])
     confirm = PasswordField('Confirme a senha')
+    role = RadioField(u'Eu sou', choices=[
+                      (1, 'Cliente'), (2, 'Corretor')], coerce=int, default=1)
     
 
 class EditUserForm(Form): 
@@ -38,6 +40,8 @@ class StoreForm(Form):
     house_number = StringField(u'Número')
     city = StringField(u'Cidade')
     state = StringField(u'Estado')
+    auto_active_user = BooleanField(
+        u'Ativar automaticamente novos usuários', false_values=(False, 'false', 0, '0'))
     
 
 class ProductForm(Form):

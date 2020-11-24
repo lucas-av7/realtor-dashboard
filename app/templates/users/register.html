@@ -18,6 +18,9 @@
     </div>
     <div class="form-group col-md-5">
       {{ render_field(form.confirm, class_="form-control") }}
+    </div>
+    <div class="form-group col-md-5">
+      {{ render_field(form.role, class_="role-choice") }}
       <p class="mt-3">
         {% with title='Criar conta', title_loading='Criando...', type='primary' %}
           {% include 'includes/_sendbutton.html' %}
@@ -25,4 +28,12 @@
       </p>
     </div>
   </form>
+
+  <style>
+    .role-choice li {
+      list-style: none;
+      display: inline-block;
+      margin-right: 10px;
+    }
+  </style>
 {% endblock %}

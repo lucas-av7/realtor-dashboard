@@ -34,8 +34,13 @@
         {{ render_field(form.state, class_="form-control") }}
       </div>
     </div>
-    {% with title='Salvar dados', title_loading='Salvando...', type='primary' %}
-      {% include 'includes/_sendbutton.html' %}
-    {% endwith %}
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        {{ render_field(form.auto_active_user) }}
+        {% with title='Salvar dados', title_loading='Salvando...', type='primary' %}
+          {% include 'includes/_sendbutton.html' %}
+        {% endwith %}
+      </div>
+    </div>
   </form>
 {% endblock %}

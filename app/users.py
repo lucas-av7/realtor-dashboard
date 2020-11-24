@@ -17,7 +17,7 @@ def register():
         password = sha256_crypt.hash(str(form.password.data))
         is_admin = False
         is_approved = False
-        role = 1
+        role = form.role.data
 
         # Create cursor
         cur = current_app.db.connection.cursor()
@@ -29,6 +29,9 @@ def register():
                 'Este e-mail já está em uso, utilize outro e-mail ou faça login.', 'danger')
             return render_template('users/register.html', form=form)
         else:
+            cur.execute('SELECT auto_active_user FROM store')
+            is_approved = cur.fetchone()['auto_active_user']
+
             cur.execute('INSERT INTO users(name, email, phone, password, is_admin, is_approved, role, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())',
                         (name, email, phone, password, is_admin, is_approved, role))
 
@@ -36,7 +39,11 @@ def register():
             current_app.db.connection.commit()
             cur.close()
 
-            flash('Você se cadastrou com sucesso, faça o login.', 'success')
+            if is_approved:
+                flash('Você se cadastrou com sucesso, faça o login.', 'success')
+            else:
+                flash(
+                    'Você se cadastrou com sucesso. Aguarde a aprovação do administrador.', 'success')
             return redirect(url_for('users.login'))
 
     return render_template('users/register.html', form=form)
