@@ -22,7 +22,9 @@ def products():
     products = cur.fetchall()
 
     if result > 0:
-        return render_template('products/products.html', products=products)
+        cur.execute('SELECT * FROM categories ORDER BY title ASC')
+        categories = cur.fetchall()
+        return render_template('products/products.html', products=products, categories=categories)
     else:
         error = 'Sem imóveis cadastrados.'
         return render_template('products/products.html', error=error)

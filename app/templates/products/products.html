@@ -3,8 +3,17 @@
 {% block body %}
   <div class="d-flex justify-content-between mb-3">
     <h3>Imóveis</h3>
+    
+      <select id="select-category" class="custom-select col-3" onchange="selectCategory(this)">
+        <option selected>Todos</option>
+        {% for category in categories %}
+          <option>{{category.title}}</option>
+        {% endfor %}
+      </select>
+
     <a href="/painel-admin/products/add_product" class="btn btn-primary ">Cadastrar Imóvel</a>
   </div>
+
   <table class="table table-striped">
     <tr>
       <th class="text-primary">ID</th>
@@ -15,7 +24,7 @@
       <th style="width: 140px;"></th>
     </tr>
     {% for product in products %}
-    <tr>
+    <tr class="product-row" category="{{product.category}}">
       <td>IM{{ product.id }}</td>
       <td class='{{"text-success" if product.is_active == 1 else "text-danger"}}'
         title='{{"Imóvel ativo" if product.is_active == 1 else "Imóvel desativado"}}'>{{ product.title }}</td>
@@ -50,4 +59,23 @@
     {% endfor %}
   </table>
   <hr>
+
+  <script>
+    function selectCategory({ value }) {
+      rows = document.querySelectorAll('.product-row')
+      if(value == 'Todos') {
+        rows.forEach(element => {
+          element.style.display = 'table-row';
+        });
+      } else {
+        rows.forEach(element => {
+          element.style.display = 'none';
+        });
+        selected_rows = document.querySelectorAll(`[category="${value}"]`)
+        selected_rows.forEach(element => {
+          element.style.display = 'table-row';
+        })
+      }
+    }
+  </script>
 {% endblock %}
