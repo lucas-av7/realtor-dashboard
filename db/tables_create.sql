@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `store` (
   `state` VARCHAR(30),
   `auto_active_user` BOOLEAN
 );
-INSERT INTO store(auto_active_user) VALUES(TRUE)
+INSERT INTO store(auto_active_user) VALUES(TRUE);
 
 -- Products
 DROP TABLE IF EXISTS `products`;
