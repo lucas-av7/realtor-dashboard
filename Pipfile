@@ -10,6 +10,7 @@ flask-sqlalchemy = "*"
 flask-wtf = "*"
 passlib = "*"
 requests = "*"
+flask-mail = "*"
 
 [dev-packages]
 python-dotenv = "*"

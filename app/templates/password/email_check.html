@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1 class="text-center">Recuperar senha</h1>
+  <form class="form-signin d-flex align-items-center flex-column" action="" method="POST">
+    <div class="form-group col-md-5">
+      <label>Email</label>
+      <input type="text" name="email" class="form-control" value={{request.form.email}}>
+
+      <p class="mt-3">
+        {% with title='Enviar código', title_loading='Enviando...', type='primary' %}
+          {% include 'includes/_sendbutton.html' %}
+        {% endwith %}
+      </p>
+    </div>
+  </form>
+{% endblock %}

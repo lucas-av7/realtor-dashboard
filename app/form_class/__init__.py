@@ -85,3 +85,17 @@ class PermissionsForm(Form):
     purposes = BooleanField(u'', false_values=(False, 'false', 0, '0'))
     users = BooleanField(u'', false_values=(False, 'false', 0, '0'))
     store = BooleanField(u'', false_values=(False, 'false', 0, '0'))
+
+
+class EmailForm(Form):
+    email = StringField(u'E-mail')
+
+
+class PasswordRecoveryForm(Form):
+    code = StringField(u'Código enviado para o email')
+    password = PasswordField(u'Nova senha', validators=[
+        validators.Length(
+            min=5, max=15, message='Mínimo 5 letras e máximo 15 letras'),
+        validators.EqualTo('confirm', message='Senhas não conferem.')
+    ])
+    confirm = PasswordField('Confirme a senha')

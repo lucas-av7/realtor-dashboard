@@ -98,3 +98,11 @@ CREATE TABLE IF NOT EXISTS `products` (
   `state` VARCHAR(30) NOT NULL,
   `description` TEXT NOT NULL
 );
+
+-- Password Recovery
+DROP TABLE IF EXISTS `pw_recovery`;
+CREATE TABLE IF NOT EXISTS `pw_recovery` (
+  `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INTEGER NOT NULL,
+  `code` INTEGER NOT NULL
+);
