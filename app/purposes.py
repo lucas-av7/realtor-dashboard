@@ -16,6 +16,10 @@ def purposes():
     purposes = cur.fetchall()
 
     if result > 0:
+        for purpose in purposes:
+            qty = cur.execute(
+                'SELECT * FROM products WHERE purpose=%s', [purpose['id']])
+            purpose['qty'] = qty
         return render_template('purposes/purposes.html', purposes=purposes)
     else:
         error = 'Sem propósitos cadastradas.'

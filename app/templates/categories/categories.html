@@ -13,7 +13,7 @@
     </tr>
     {% for category in categories %}
     <tr>
-      <td>{{ category.title }}</td>
+      <td>{{ category.title }} ({{ category.qty }})</td>
       <td></td>
       <td>
         {% if category.id != 1 %}

@@ -16,6 +16,10 @@ def categories():
     categories = cur.fetchall()
     
     if result > 0:
+        for category in categories:
+            qty = cur.execute(
+                'SELECT * FROM products WHERE category=%s', [category['id']])
+            category['qty'] = qty
         return render_template('categories/categories.html', categories=categories)
     else:
         error = 'Sem categorias cadastradas.'
