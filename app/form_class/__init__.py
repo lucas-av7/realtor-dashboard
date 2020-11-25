@@ -53,9 +53,10 @@ class ProductForm(Form):
     bathrooms = StringField(u'Banheiros')
     parking_spaces = StringField(u'Vagas de garagem')
     area = StringField(u'Área m2')
-    price = StringField(u'Preço (R$)', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
-    cond_fare = StringField(u'Condomínio (R$)')
-    iptu_fare = StringField(u'IPTU (R$)')
+    price = StringField(u'Preço', validators=[validators.Length(
+        min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
+    cond_fare = StringField(u'Condomínio')
+    iptu_fare = StringField(u'IPTU')
     modality = SelectField(u'Modalidade', choices=[('rent', 'Aluguel'), ('sell', 'Venda')])
     street = StringField(u'Rua', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])
     district = StringField(u'Bairro', validators=[validators.Length(min=5, max=50, message='Mínimo 5 letras e máximo 50 letras')])

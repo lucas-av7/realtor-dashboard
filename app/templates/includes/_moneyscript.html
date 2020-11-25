@@ -1,0 +1,20 @@
+<script>
+  inputs = document.querySelectorAll('.money-mask')
+
+  inputs.forEach(input => {
+    input.addEventListener('focus', function (e) {
+      e.target.value = ''
+    });
+
+    input.addEventListener('input', function (e) {
+      value = e.target.value.replace(/[^0-9,]/g, '')
+      value = value.replace(',', '.')
+      if(value == '') return e.target.value = ''
+    });
+
+    input.addEventListener('blur', function (e) {
+      if (value == '') return
+      e.target.value = parseFloat(value).toLocaleString('pt-br', {style: 'currency', currency: 'BRL'});
+    });
+  });
+</script>
