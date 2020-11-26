@@ -23,7 +23,7 @@ def images(product_id):
         
         if len(pics) == 0:
             flash('Nenhuma foto selecionada.', 'danger')
-            return render_template('products/images/images.html', images=images, title=title)
+            return render_template('products/images/images.html', images=images, title=title, product_id=product_id)
         
         for pic in pics:
             base64img = base64.b64encode(pic.read())
@@ -43,10 +43,10 @@ def images(product_id):
     
     
     if result > 0:
-        return render_template('products/images/images.html', images=images, title=title)
+        return render_template('products/images/images.html', images=images, title=title, product_id=product_id)
     else:
         error = 'Sem imagens enviadas.'
-        return render_template('products/images/images.html', error=error, title=title)
+        return render_template('products/images/images.html', error=error, title=title, product_id=product_id)
     
     
 # Set Main Image

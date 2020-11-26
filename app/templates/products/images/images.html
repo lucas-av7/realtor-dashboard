@@ -2,7 +2,8 @@
 
 {% block body %}
 <div class="d-flex justify-content-between mb-3">
-  <h3>Fotos - {{ title }}</h3>
+  <h3>Fotos - {{ title }} <small>(IM{{ product_id }})</small></h3>
+  
   <form action="" method="POST" enctype="multipart/form-data">
     <input id="input-img" style="display: none;" type="file" name="pic[]" multiple="" accept="image/*" onchange="sendimage(this.files)">
     <input id="send-img" style="display: none;" type="submit">
