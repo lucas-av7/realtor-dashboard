@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, request, flash, render_template, redirect, url_for, session
-from decorators import is_logged_in, is_admin_in
+from decorators import is_logged_in, allow_all_products
 from form_class import ProductForm
 
 bp_products = Blueprint('products', __name__)
@@ -33,7 +33,7 @@ def products():
 # Products by user
 @bp_products.route('/painel-admin/products/<string:id>')
 @is_logged_in  # Check if the user is logged in)
-@is_admin_in  # Check if the user id admin
+@allow_all_products  # Check if the user has permission
 def products_by_user(id):
     # Create cursor
     cur = current_app.db.connection.cursor()
@@ -51,7 +51,7 @@ def products_by_user(id):
         return render_template('products/products_by_user.html', products=products, username=username)
     else:
         error = 'Sem imóveis cadastrados por este usuário.'
-        return render_template('products/products_by_user.html', error=error)
+        return render_template('products/products_by_user.html', error=error, username=username)
 
 
 # Add Product
@@ -121,6 +121,10 @@ def add_product():
 @ bp_products.route('/painel-admin/product/edit_product/<string:id>', methods=['GET', 'POST'])
 @ is_logged_in  # Check if the user is logged in)
 def edit_product(id):
+    if request.method == 'GET':
+        global url_from
+        url_from = request.referrer
+
     # Create cursor
     cur = current_app.db.connection.cursor()
 
@@ -204,7 +208,10 @@ def edit_product(id):
 
             flash('Imóvel atualizado', 'success')
 
-            return redirect(url_for('products.products'))
+            if url_from:
+                return redirect(url_from)
+            else:
+                return redirect(url_for('products.products'))
 
     return render_template('products/edit_product.html', form=form)
 
@@ -221,7 +228,7 @@ def delete_product(id):
     created_by = cur.fetchone()['created_by']
     user_id = session['user_id']
 
-    if created_by == user_id or 'is_admin' in session:
+    if created_by == user_id or 'is_admin' in session or session['all_products']:
         # Execute
         cur.execute('DELETE FROM products WHERE id = %s', [id])
         cur.execute('DELETE FROM images WHERE product_id = %s', [id])
@@ -232,7 +239,10 @@ def delete_product(id):
 
         flash('Imóvel deletado', 'success')
 
-        return redirect(url_for('products.products'))
+        if request.referrer:
+            return redirect(request.referrer)
+        else:
+            return redirect(url_for('products.products'))
     else:
         flash('Não autorizado', 'danger')
         return render_template('home.html')
