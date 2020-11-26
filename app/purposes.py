@@ -67,7 +67,11 @@ def edit_purpose(id):
     cur = current_app.db.connection.cursor()
 
     # Get purpose by ID
-    cur.execute('SELECT * FROM purposes WHERE id=%s', [id])
+    result = cur.execute('SELECT * FROM purposes WHERE id=%s', [id])
+    if result == 0:
+        flash('Propósito inexistente.', 'danger')
+        return redirect(url_for('purposes.purposes'))
+
     purpose = cur.fetchone()
 
     # Get form

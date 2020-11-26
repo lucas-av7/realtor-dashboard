@@ -162,7 +162,11 @@ def edit_user(id):
     cur = current_app.db.connection.cursor()
 
     # Get user by ID
-    cur.execute('SELECT * FROM users WHERE id=%s', [id])
+    result = cur.execute('SELECT * FROM users WHERE id=%s', [id])
+    if result == 0:
+        flash('Usuário inexistente.', 'danger')
+        return redirect(url_for('users.users'))
+
     user = cur.fetchone()
 
     # Get form

@@ -40,7 +40,11 @@ def products_by_user(id):
 
     # Ger uername
     cur.execute('SELECT name FROM users WHERE id=%s', [id])
-    username = cur.fetchone()['name']
+    try:
+        username = cur.fetchone()['name']
+    except:
+        flash('Usuário inexistente.', 'danger')
+        return redirect(url_for('users.users'))
 
     # Get products
     result = cur.execute(
@@ -131,6 +135,10 @@ def edit_product(id):
     # Get product by ID
     cur.execute('SELECT * FROM products WHERE id=%s', [id])
     product = cur.fetchone()
+    
+    if not product:
+        flash('Imóvel inexistente.', 'danger')
+        return redirect(url_for('products.products'))
 
     # Get form
     form = ProductForm(request.form)
@@ -225,8 +233,13 @@ def delete_product(id):
 
     # Check if the user is the owner of the product or admin
     cur.execute('SELECT created_by FROM products WHERE id = %s', [id])
-    created_by = cur.fetchone()['created_by']
-    user_id = session['user_id']
+    try:
+        created_by = cur.fetchone()['created_by']
+        user_id = session['user_id']
+
+    except:
+        flash('Imóvel inexistente.', 'danger')
+        return redirect(url_for('products.products'))
 
     if created_by == user_id or 'is_admin' in session or session['all_products']:
         # Execute

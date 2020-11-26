@@ -67,9 +67,13 @@ def edit_category(id):
     cur = current_app.db.connection.cursor()
     
     # Get category by ID
-    cur.execute('SELECT * FROM categories WHERE id=%s', [id])
+    result = cur.execute('SELECT * FROM categories WHERE id=%s', [id])
+    if result == 0:
+        flash('Categoria inexistente.', 'danger')
+        return redirect(url_for('categories.categories'))
+
     category = cur.fetchone()
-    
+
     # Get form
     form = CategoryForm(request.form)
     
@@ -111,7 +115,7 @@ def delete_category(id):
     current_app.db.connection.commit()
     cur.close()
     
-    flash('Categoria deletada', 'success')
+    flash('Categoria deletada.', 'success')
 
     return redirect(url_for('categories.categories'))
 
