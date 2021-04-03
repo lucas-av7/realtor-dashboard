@@ -6,13 +6,15 @@ from categories import bp_categories
 from users import bp_users
 from profile import bp_profile
 from purposes import bp_purposes
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template
 from flask_mysqldb import MySQL
 from flask_mail import Mail
 import os
 from decorators import is_logged_in
 
 app = Flask(__name__)
+
+app.secret_key = os.environ.get("SECRET_KEY")
 
 # Config MySql
 app.config['MYSQL_HOST'] = os.environ.get("MYSQL_HOST")
@@ -38,6 +40,8 @@ mail = Mail(app)
 app.mail = mail
 
 # Home page
+
+
 @app.route('/painel-admin')
 def home():
     return render_template('home.html')
@@ -59,7 +63,3 @@ app.register_blueprint(bp_products)
 app.register_blueprint(bp_images)
 app.register_blueprint(bp_password)
 app.register_blueprint(bp_profile)
-
-if __name__ == '__main__':
-    app.secret_key = os.environ.get("SECRET_KEY")
-    app.run(debug=os.environ.get("FLASK_DEBUG"))

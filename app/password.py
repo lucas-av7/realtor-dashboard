@@ -30,7 +30,7 @@ def email_check():
 
             try:
                 subject = 'Código de recuperação de senha'
-                body = 'HouseFlix - Use o seguinte código para mudar sua senha: ' + code
+                body = 'Imobiliária - Use o seguinte código para mudar sua senha: ' + code
                 sendEmail(subject, body, email)
                 cur.execute(
                     'INSERT INTO pw_recovery(user_id, code) VALUES (%s, %s)', (user_id, code))

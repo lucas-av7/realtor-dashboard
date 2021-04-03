@@ -11,6 +11,7 @@ flask-wtf = "*"
 passlib = "*"
 requests = "*"
 flask-mail = "*"
+python-dotenv = "*"
 
 [dev-packages]
 python-dotenv = "*"
